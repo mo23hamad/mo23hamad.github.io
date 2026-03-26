@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Growth Journal</title>
+    <title>Career Growth Journal - Secure</title>
     <style>
         * {
             margin: 0;
@@ -18,6 +18,127 @@
             padding: 20px;
         }
 
+        /* Login Screen Styles */
+        .login-container {
+            max-width: 450px;
+            margin: 100px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .login-container h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .login-container p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .login-form input {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .login-form button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .setup-mode {
+            background: #e7f3ff;
+            color: #0066cc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .setup-mode strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .toggle-mode {
+            color: #667eea;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        .toggle-mode:hover {
+            color: #764ba2;
+        }
+
+        .security-note {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.85em;
+            text-align: left;
+        }
+
+        .security-note strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Main App Styles */
+        .app-container {
+            display: none;
+        }
+
+        .app-container.unlocked {
+            display: block;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -29,6 +150,25 @@
             border-radius: 20px;
             margin-bottom: 20px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
         }
 
         .header h1 {
@@ -179,8 +319,9 @@
             background: #dc3545;
         }
 
-        .entry-list {
-            margin-top: 20px;
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.9em;
         }
 
         .entry-card {
@@ -263,10 +404,6 @@
         .level-advanced { background: #28a745; color: white; }
         .level-expert { background: #6f42c1; color: white; }
 
-        .insights-section {
-            margin-top: 30px;
-        }
-
         .insight-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -316,16 +453,13 @@
             flex-wrap: wrap;
         }
 
-        .search-bar {
-            margin-bottom: 20px;
-        }
-
         .search-bar input {
             width: 100%;
             padding: 12px 20px;
             border: 2px solid #e0e0e0;
             border-radius: 25px;
             font-size: 1em;
+            margin-bottom: 20px;
         }
 
         .filter-chips {
@@ -353,12 +487,6 @@
             color: white;
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -368,11 +496,6 @@
         .action-buttons {
             display: flex;
             gap: 10px;
-        }
-
-        .btn-sm {
-            padding: 8px 15px;
-            font-size: 0.9em;
         }
 
         .prompt-section {
@@ -394,31 +517,20 @@
             line-height: 1.6;
         }
 
-        .storage-indicator {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.9em;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-
-        .storage-indicator.cloud {
-            border: 2px solid #28a745;
-            color: #28a745;
-        }
-
-        .storage-indicator.local {
-            border: 2px solid #ffc107;
-            color: #856404;
-        }
-
         @media (max-width: 768px) {
+            .login-container {
+                margin: 50px auto;
+                padding: 30px 20px;
+            }
+
             .header h1 {
                 font-size: 1.8em;
+            }
+            
+            .logout-btn {
+                position: static;
+                margin-top: 15px;
+                width: 100%;
             }
             
             .tabs {
@@ -438,281 +550,289 @@
     </style>
 </head>
 <body>
-    <div class="storage-indicator" id="storageIndicator">💾 Loading...</div>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <h1>🔐 Career Growth Journal</h1>
+        <p>Secure access to your professional database</p>
 
-    <div class="container">
-        <div class="header">
-            <h1>🚀 Career Growth Journal</h1>
-            <p>Your personal professional database and AI-powered career coach</p>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3 id="totalEntries">0</h3>
-                    <p>Journal Entries</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="totalSkills">0</h3>
-                    <p>Skills Tracked</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="currentStreak">0</h3>
-                    <p>Day Streak</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="totalAchievements">0</h3>
-                    <p>Achievements</p>
-                </div>
-            </div>
+        <div id="errorMessage" class="error-message"></div>
+        <div id="setupNotice" class="setup-mode" style="display: none;">
+            <strong>🎯 First Time Setup</strong>
+            Create your password to secure your career journal.
         </div>
 
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('journal')">📝 Daily Journal</button>
-            <button class="tab" onclick="switchTab('skills')">💼 Skills Database</button>
-            <button class="tab" onclick="switchTab('insights')">💡 Career Insights</button>
-            <button class="tab" onclick="switchTab('export')">📤 Export & Applications</button>
+        <form id="loginForm" class="login-form">
+            <input 
+                type="password" 
+                id="passwordInput" 
+                placeholder="Enter your password" 
+                required 
+                autocomplete="current-password"
+            >
+            <button type="submit" id="loginButton">🔓 Unlock Journal</button>
+        </form>
+
+        <div class="toggle-mode" id="toggleMode" style="display: none;">
+            Change password
         </div>
 
-        <div class="content">
-            <!-- Daily Journal Tab -->
-            <div id="journal" class="tab-content active">
-                <h2>Today's Reflection</h2>
-                <p style="color: #666; margin-bottom: 25px;">Take a moment to reflect on your professional growth today.</p>
+        <div class="security-note">
+            <strong>🔒 Security Note:</strong>
+            Your password is stored locally using SHA-256 hashing. Data remains on your device. For maximum security, use a strong, unique password.
+        </div>
+    </div>
 
-                <div class="prompt-section">
-                    <h4>💭 Guided Prompts</h4>
-                    <p>Answer these questions to capture your professional journey and build your career database.</p>
-                </div>
-
-                <form id="journalForm">
-                    <div class="form-group">
-                        <label>What challenges did you face today?</label>
-                        <textarea id="challenges" placeholder="Describe the obstacles, difficult tasks, or problems you encountered..."></textarea>
+    <!-- Main App (Hidden until unlocked) -->
+    <div id="appContainer" class="app-container">
+        <div class="container">
+            <div class="header">
+                <button class="logout-btn" onclick="logout()">🔒 Lock Journal</button>
+                <h1>🚀 Career Growth Journal</h1>
+                <p>Your personal professional database and AI-powered career coach</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalEntries">0</h3>
+                        <p>Journal Entries</p>
                     </div>
-
-                    <div class="form-group">
-                        <label>What did you achieve today?</label>
-                        <textarea id="achievements" placeholder="List your accomplishments, completed tasks, or wins (big or small)..."></textarea>
+                    <div class="stat-card">
+                        <h3 id="totalSkills">0</h3>
+                        <p>Skills Tracked</p>
                     </div>
-
-                    <div class="form-group">
-                        <label>What did you learn today?</label>
-                        <textarea id="lessonsLearned" placeholder="What new knowledge, insights, or skills did you gain?"></textarea>
+                    <div class="stat-card">
+                        <h3 id="currentStreak">0</h3>
+                        <p>Day Streak</p>
                     </div>
-
-                    <div class="form-group">
-                        <label>What do you want to learn next?</label>
-                        <textarea id="lessonsToLearn" placeholder="What skills, technologies, or areas do you want to explore?"></textarea>
+                    <div class="stat-card">
+                        <h3 id="totalAchievements">0</h3>
+                        <p>Achievements</p>
                     </div>
-
-                    <div class="form-group">
-                        <label>Skills used today (comma-separated)</label>
-                        <input type="text" id="skillsUsed" placeholder="e.g., Python, Project Management, Public Speaking, SQL">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Project/Context</label>
-                        <input type="text" id="project" placeholder="What project or area of work was this related to?">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Career Goal Progress</label>
-                        <select id="goalProgress">
-                            <option value="">Select...</option>
-                            <option value="aligned">Directly aligned with my goals</option>
-                            <option value="somewhat">Somewhat related to my goals</option>
-                            <option value="neutral">Neutral/Maintenance work</option>
-                            <option value="learning">Learning opportunity</option>
-                            <option value="misaligned">Not aligned with my goals</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn">💾 Save Entry</button>
-                </form>
-
-                <div class="entry-list">
-                    <h3 style="margin: 30px 0 20px 0;">Recent Entries</h3>
-                    <div class="search-bar">
-                        <input type="text" id="searchEntries" placeholder="🔍 Search entries..." oninput="renderEntries()">
-                    </div>
-                    <div id="entriesList"></div>
                 </div>
             </div>
 
-            <!-- Skills Database Tab -->
-            <div id="skills" class="tab-content">
-                <h2>Skills Database</h2>
-                <p style="color: #666; margin-bottom: 25px;">Track and manage your professional skillset for job applications.</p>
-
-                <form id="skillForm">
-                    <div class="form-group">
-                        <label>Skill Name</label>
-                        <input type="text" id="skillName" placeholder="e.g., Python, Leadership, Data Analysis" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Proficiency Level</label>
-                        <select id="skillLevel" required>
-                            <option value="">Select level...</option>
-                            <option value="beginner">Beginner - Learning the basics</option>
-                            <option value="intermediate">Intermediate - Can work independently</option>
-                            <option value="advanced">Advanced - Can mentor others</option>
-                            <option value="expert">Expert - Industry recognized</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Category</label>
-                        <select id="skillCategory" required>
-                            <option value="">Select category...</option>
-                            <option value="technical">Technical/Hard Skills</option>
-                            <option value="soft">Soft Skills</option>
-                            <option value="tools">Tools & Software</option>
-                            <option value="languages">Programming Languages</option>
-                            <option value="certifications">Certifications</option>
-                            <option value="domain">Domain Knowledge</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Years of Experience</label>
-                        <input type="number" id="skillYears" min="0" step="0.5" placeholder="e.g., 2.5">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Context/Examples</label>
-                        <textarea id="skillContext" placeholder="Describe how you've used this skill, projects where you applied it, achievements..."></textarea>
-                    </div>
-
-                    <button type="submit" class="btn">➕ Add Skill</button>
-                </form>
-
-                <div style="margin-top: 30px;">
-                    <h3 style="margin-bottom: 20px;">Your Skills</h3>
-                    <div class="filter-chips">
-                        <div class="chip active" onclick="filterSkills('all')">All</div>
-                        <div class="chip" onclick="filterSkills('technical')">Technical</div>
-                        <div class="chip" onclick="filterSkills('soft')">Soft Skills</div>
-                        <div class="chip" onclick="filterSkills('tools')">Tools</div>
-                        <div class="chip" onclick="filterSkills('languages')">Languages</div>
-                        <div class="chip" onclick="filterSkills('certifications')">Certifications</div>
-                        <div class="chip" onclick="filterSkills('domain')">Domain</div>
-                    </div>
-                    <div id="skillsList"></div>
-                </div>
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('journal')">📝 Daily Journal</button>
+                <button class="tab" onclick="switchTab('skills')">💼 Skills Database</button>
+                <button class="tab" onclick="switchTab('insights')">💡 Career Insights</button>
+                <button class="tab" onclick="switchTab('export')">📤 Export & Applications</button>
+                <button class="tab" onclick="switchTab('security')">🔐 Security</button>
             </div>
 
-            <!-- Career Insights Tab -->
-            <div id="insights" class="tab-content">
-                <h2>Career Insights & Coaching</h2>
-                <p style="color: #666; margin-bottom: 25px;">AI-generated insights based on your journal entries and skills.</p>
+            <div class="content">
+                <!-- Daily Journal Tab -->
+                <div id="journal" class="tab-content active">
+                    <h2>Today's Reflection</h2>
+                    <p style="color: #666; margin-bottom: 25px;">Take a moment to reflect on your professional growth today.</p>
 
-                <div class="insights-section" id="insightsContent">
-                    <div class="loading">Analyzing your career data...</div>
-                </div>
-            </div>
-
-            <!-- Export & Applications Tab -->
-            <div id="export" class="tab-content">
-                <h2>Export & Job Applications</h2>
-                <p style="color: #666; margin-bottom: 25px;">Generate customized materials for your job search.</p>
-
-                <div class="export-section">
-                    <h3>📋 Export Your Data</h3>
-                    <div class="export-buttons">
-                        <button class="btn" onclick="exportResume()">📄 Generate Resume Data</button>
-                        <button class="btn" onclick="exportSkillsMatrix()">🎯 Skills Matrix</button>
-                        <button class="btn" onclick="exportAllData()">💾 Download All Data (JSON)</button>
+                    <div class="prompt-section">
+                        <h4>💭 Guided Prompts</h4>
+                        <p>Answer these questions to capture your professional journey and build your career database.</p>
                     </div>
-                </div>
 
-                <div class="export-section" style="margin-top: 20px;">
-                    <h3>🎯 Job Application Assistant</h3>
-                    <form id="jobMatchForm">
+                    <form id="journalForm">
                         <div class="form-group">
-                            <label>Paste Job Description</label>
-                            <textarea id="jobDescription" placeholder="Paste the full job description here..." style="min-height: 200px;"></textarea>
+                            <label>What challenges did you face today?</label>
+                            <textarea id="challenges" placeholder="Describe the obstacles, difficult tasks, or problems you encountered..."></textarea>
                         </div>
-                        <button type="submit" class="btn">🔍 Analyze Match & Generate Materials</button>
+
+                        <div class="form-group">
+                            <label>What did you achieve today?</label>
+                            <textarea id="achievements" placeholder="List your accomplishments, completed tasks, or wins (big or small)..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>What did you learn today?</label>
+                            <textarea id="lessonsLearned" placeholder="What new knowledge, insights, or skills did you gain?"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>What do you want to learn next?</label>
+                            <textarea id="lessonsToLearn" placeholder="What skills, technologies, or areas do you want to explore?"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Skills used today (comma-separated)</label>
+                            <input type="text" id="skillsUsed" placeholder="e.g., Python, Project Management, Public Speaking, SQL">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Project/Context</label>
+                            <input type="text" id="project" placeholder="What project or area of work was this related to?">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Career Goal Progress</label>
+                            <select id="goalProgress">
+                                <option value="">Select...</option>
+                                <option value="aligned">Directly aligned with my goals</option>
+                                <option value="somewhat">Somewhat related to my goals</option>
+                                <option value="neutral">Neutral/Maintenance work</option>
+                                <option value="learning">Learning opportunity</option>
+                                <option value="misaligned">Not aligned with my goals</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn">💾 Save Entry</button>
                     </form>
-                    <div id="matchResults" style="margin-top: 20px;"></div>
+
+                    <div class="entry-list" style="margin-top: 30px;">
+                        <h3 style="margin-bottom: 20px;">Recent Entries</h3>
+                        <div class="search-bar">
+                            <input type="text" id="searchEntries" placeholder="🔍 Search entries..." oninput="renderEntries()">
+                        </div>
+                        <div id="entriesList"></div>
+                    </div>
+                </div>
+
+                <!-- Skills Tab -->
+                <div id="skills" class="tab-content">
+                    <h2>Skills Database</h2>
+                    <p style="color: #666; margin-bottom: 25px;">Track and manage your professional skillset for job applications.</p>
+
+                    <form id="skillForm">
+                        <div class="form-group">
+                            <label>Skill Name</label>
+                            <input type="text" id="skillName" placeholder="e.g., Python, Leadership, Data Analysis" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Proficiency Level</label>
+                            <select id="skillLevel" required>
+                                <option value="">Select level...</option>
+                                <option value="beginner">Beginner - Learning the basics</option>
+                                <option value="intermediate">Intermediate - Can work independently</option>
+                                <option value="advanced">Advanced - Can mentor others</option>
+                                <option value="expert">Expert - Industry recognized</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="skillCategory" required>
+                                <option value="">Select category...</option>
+                                <option value="technical">Technical/Hard Skills</option>
+                                <option value="soft">Soft Skills</option>
+                                <option value="tools">Tools & Software</option>
+                                <option value="languages">Programming Languages</option>
+                                <option value="certifications">Certifications</option>
+                                <option value="domain">Domain Knowledge</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Years of Experience</label>
+                            <input type="number" id="skillYears" min="0" step="0.5" placeholder="e.g., 2.5">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Context/Examples</label>
+                            <textarea id="skillContext" placeholder="Describe how you've used this skill, projects where you applied it, achievements..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn">➕ Add Skill</button>
+                    </form>
+
+                    <div style="margin-top: 30px;">
+                        <h3 style="margin-bottom: 20px;">Your Skills</h3>
+                        <div class="filter-chips">
+                            <div class="chip active" onclick="filterSkills('all')">All</div>
+                            <div class="chip" onclick="filterSkills('technical')">Technical</div>
+                            <div class="chip" onclick="filterSkills('soft')">Soft Skills</div>
+                            <div class="chip" onclick="filterSkills('tools')">Tools</div>
+                            <div class="chip" onclick="filterSkills('languages')">Languages</div>
+                            <div class="chip" onclick="filterSkills('certifications')">Certifications</div>
+                            <div class="chip" onclick="filterSkills('domain')">Domain</div>
+                        </div>
+                        <div id="skillsList"></div>
+                    </div>
+                </div>
+
+                <!-- Insights Tab -->
+                <div id="insights" class="tab-content">
+                    <h2>Career Insights & Coaching</h2>
+                    <p style="color: #666; margin-bottom: 25px;">AI-generated insights based on your journal entries and skills.</p>
+                    <div id="insightsContent"></div>
+                </div>
+
+                <!-- Export Tab -->
+                <div id="export" class="tab-content">
+                    <h2>Export & Job Applications</h2>
+                    <p style="color: #666; margin-bottom: 25px;">Generate customized materials for your job search.</p>
+
+                    <div class="export-section">
+                        <h3>📋 Export Your Data</h3>
+                        <div class="export-buttons">
+                            <button class="btn" onclick="exportResume()">📄 Generate Resume Data</button>
+                            <button class="btn" onclick="exportSkillsMatrix()">🎯 Skills Matrix</button>
+                            <button class="btn" onclick="exportAllData()">💾 Download All Data (JSON)</button>
+                        </div>
+                    </div>
+
+                    <div class="export-section" style="margin-top: 20px;">
+                        <h3>🎯 Job Application Assistant</h3>
+                        <form id="jobMatchForm">
+                            <div class="form-group">
+                                <label>Paste Job Description</label>
+                                <textarea id="jobDescription" placeholder="Paste the full job description here..." style="min-height: 200px;"></textarea>
+                            </div>
+                            <button type="submit" class="btn">🔍 Analyze Match & Generate Materials</button>
+                        </form>
+                        <div id="matchResults" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
+
+                <!-- Security Tab -->
+                <div id="security" class="tab-content">
+                    <h2>🔐 Security Settings</h2>
+                    <p style="color: #666; margin-bottom: 25px;">Manage your password and data security.</p>
+
+                    <div class="export-section">
+                        <h3>Change Password</h3>
+                        <form id="changePasswordForm">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" id="currentPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" id="newPassword" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirmPassword" required minlength="6">
+                            </div>
+                            <button type="submit" class="btn">🔄 Update Password</button>
+                        </form>
+                    </div>
+
+                    <div class="export-section" style="margin-top: 20px; background: #fee;">
+                        <h3 style="color: #c33;">⚠️ Danger Zone</h3>
+                        <p style="color: #666; margin-bottom: 15px;">Permanently delete all your data. This cannot be undone!</p>
+                        <button class="btn btn-danger" onclick="deleteAllData()">🗑️ Delete All Data</button>
+                    </div>
+
+                    <div style="margin-top: 30px; padding: 20px; background: #e7f3ff; border-radius: 10px;">
+                        <h3 style="color: #0066cc; margin-bottom: 15px;">Security Information</h3>
+                        <ul style="color: #666; line-height: 1.8;">
+                            <li>✅ Password stored using SHA-256 hashing</li>
+                            <li>✅ All data stored locally in your browser</li>
+                            <li>✅ No data sent to any server</li>
+                            <li>✅ Auto-lock when you close the browser</li>
+                            <li>⚠️ If you forget your password, data cannot be recovered</li>
+                            <li>💡 Export backups regularly to avoid data loss</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Dual storage system: Try Claude storage first, fallback to localStorage
-        const StorageAdapter = {
-            storageType: 'unknown',
-            
-            async init() {
-                // Test if window.storage API is available (Claude environment)
-                if (typeof window.storage !== 'undefined') {
-                    try {
-                        await window.storage.get('test-key');
-                        this.storageType = 'claude';
-                        console.log('✅ Using Claude persistent storage');
-                        return true;
-                    } catch (e) {
-                        console.log('Claude storage not available, falling back to localStorage');
-                    }
-                }
-                
-                // Fallback to localStorage
-                if (typeof localStorage !== 'undefined') {
-                    this.storageType = 'local';
-                    console.log('📱 Using browser localStorage');
-                    return true;
-                }
-                
-                console.error('No storage available!');
-                return false;
-            },
-            
-            async get(key) {
-                if (this.storageType === 'claude') {
-                    try {
-                        const result = await window.storage.get(key);
-                        return result ? result.value : null;
-                    } catch (e) {
-                        return null;
-                    }
-                } else {
-                    return localStorage.getItem(key);
-                }
-            },
-            
-            async set(key, value) {
-                if (this.storageType === 'claude') {
-                    try {
-                        await window.storage.set(key, value);
-                        return true;
-                    } catch (e) {
-                        console.error('Storage error:', e);
-                        return false;
-                    }
-                } else {
-                    localStorage.setItem(key, value);
-                    return true;
-                }
-            },
-            
-            getIndicator() {
-                const indicator = document.getElementById('storageIndicator');
-                if (this.storageType === 'claude') {
-                    indicator.textContent = '☁️ Cloud Storage';
-                    indicator.className = 'storage-indicator cloud';
-                } else if (this.storageType === 'local') {
-                    indicator.textContent = '💾 Local Storage';
-                    indicator.className = 'storage-indicator local';
-                } else {
-                    indicator.textContent = '⚠️ No Storage';
-                    indicator.style.display = 'none';
-                }
-            }
-        };
-
-        // Storage using adaptive storage system
+        // Security & Authentication
+        const AUTH_KEY = 'career_journal_auth_hash';
+        const SESSION_KEY = 'career_journal_session';
+        
+        let isAuthenticated = false;
         let currentFilter = 'all';
         let journalEntries = [];
         let skills = [];
@@ -723,10 +843,152 @@
             totalAchievements: 0
         };
 
-        // Initialize app
+        // SHA-256 hash function
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Check if first time setup
+        function isFirstTimeSetup() {
+            return !localStorage.getItem(AUTH_KEY);
+        }
+
+        // Setup password for first time
+        async function setupPassword(password) {
+            const hash = await hashPassword(password);
+            localStorage.setItem(AUTH_KEY, hash);
+            return true;
+        }
+
+        // Verify password
+        async function verifyPassword(password) {
+            const storedHash = localStorage.getItem(AUTH_KEY);
+            if (!storedHash) return false;
+            
+            const inputHash = await hashPassword(password);
+            return storedHash === inputHash;
+        }
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const password = document.getElementById('passwordInput').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (isFirstTimeSetup()) {
+                // First time setup
+                if (password.length < 6) {
+                    errorMessage.textContent = '⚠️ Password must be at least 6 characters';
+                    errorMessage.classList.add('show');
+                    return;
+                }
+                
+                await setupPassword(password);
+                unlockApp();
+            } else {
+                // Login attempt
+                const isValid = await verifyPassword(password);
+                
+                if (isValid) {
+                    unlockApp();
+                } else {
+                    errorMessage.textContent = '❌ Incorrect password. Please try again.';
+                    errorMessage.classList.add('show');
+                    document.getElementById('passwordInput').value = '';
+                }
+            }
+        });
+
+        // Unlock the app
+        function unlockApp() {
+            isAuthenticated = true;
+            sessionStorage.setItem(SESSION_KEY, 'true');
+            
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').classList.add('unlocked');
+            
+            init();
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Lock your journal? You\'ll need your password to access it again.')) {
+                isAuthenticated = false;
+                sessionStorage.removeItem(SESSION_KEY);
+                
+                document.getElementById('loginScreen').style.display = 'block';
+                document.getElementById('appContainer').classList.remove('unlocked');
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('errorMessage').classList.remove('show');
+            }
+        }
+
+        // Change password
+        document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            
+            if (newPass !== confirm) {
+                alert('❌ New passwords do not match!');
+                return;
+            }
+            
+            if (newPass.length < 6) {
+                alert('❌ Password must be at least 6 characters!');
+                return;
+            }
+            
+            const isValid = await verifyPassword(current);
+            if (!isValid) {
+                alert('❌ Current password is incorrect!');
+                return;
+            }
+            
+            await setupPassword(newPass);
+            alert('✅ Password updated successfully!');
+            document.getElementById('changePasswordForm').reset();
+        });
+
+        // Delete all data
+        function deleteAllData() {
+            const confirmed = confirm('⚠️ WARNING: This will permanently delete ALL your journal entries, skills, and data. This cannot be undone!\n\nType "DELETE" in the next prompt to confirm.');
+            
+            if (confirmed) {
+                const doubleConfirm = prompt('Type DELETE to confirm:');
+                if (doubleConfirm === 'DELETE') {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    alert('✅ All data deleted. You will be logged out.');
+                    location.reload();
+                }
+            }
+        }
+
+        // Check session on page load
+        window.addEventListener('load', () => {
+            if (isFirstTimeSetup()) {
+                document.getElementById('setupNotice').style.display = 'block';
+                document.getElementById('loginButton').textContent = '🎯 Create Password';
+            } else {
+                document.getElementById('toggleMode').style.display = 'block';
+            }
+            
+            // Check if session is active
+            if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+                unlockApp();
+            }
+        });
+
+        // Initialize app (called after successful login)
         async function init() {
-            await StorageAdapter.init();
-            StorageAdapter.getIndicator();
             await loadData();
             updateStats();
             renderEntries();
@@ -734,42 +996,33 @@
             generateInsights();
         }
 
-        // Load data from persistent storage
+        // Load data from localStorage
         async function loadData() {
             try {
-                const entriesData = await StorageAdapter.get('journal-entries');
+                const entriesData = localStorage.getItem('journal-entries');
                 if (entriesData) {
                     journalEntries = JSON.parse(entriesData);
                 }
 
-                const skillsData = await StorageAdapter.get('skills-database');
+                const skillsData = localStorage.getItem('skills-database');
                 if (skillsData) {
                     skills = JSON.parse(skillsData);
                 }
 
-                const statsData = await StorageAdapter.get('career-stats');
+                const statsData = localStorage.getItem('career-stats');
                 if (statsData) {
                     stats = JSON.parse(statsData);
                 }
             } catch (error) {
                 console.log('No existing data found, starting fresh');
-                journalEntries = [];
-                skills = [];
             }
         }
 
-        // Save data to persistent storage
+        // Save data
         async function saveData() {
-            try {
-                await StorageAdapter.set('journal-entries', JSON.stringify(journalEntries));
-                await StorageAdapter.set('skills-database', JSON.stringify(skills));
-                await StorageAdapter.set('career-stats', JSON.stringify(stats));
-                return true;
-            } catch (error) {
-                console.error('Error saving data:', error);
-                alert('Error saving data. Please try again.');
-                return false;
-            }
+            localStorage.setItem('journal-entries', JSON.stringify(journalEntries));
+            localStorage.setItem('skills-database', JSON.stringify(skills));
+            localStorage.setItem('career-stats', JSON.stringify(stats));
         }
 
         // Tab switching
@@ -785,7 +1038,7 @@
             }
         }
 
-        // Journal form submission
+        // Journal form
         document.getElementById('journalForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -802,15 +1055,11 @@
             };
 
             journalEntries.unshift(entry);
-            
-            // Update stats
             stats.totalEntries = journalEntries.length;
-            if (entry.achievements.length > 20) {
-                stats.totalAchievements++;
-            }
+            if (entry.achievements.length > 20) stats.totalAchievements++;
             calculateStreak();
 
-            // Auto-add skills used to skills database
+            // Auto-add skills
             entry.skillsUsed.forEach(skillName => {
                 if (!skills.find(s => s.name.toLowerCase() === skillName.toLowerCase())) {
                     skills.push({
@@ -830,23 +1079,20 @@
             });
 
             stats.totalSkills = skills.length;
-
-            const saved = await saveData();
-            if (saved) {
-                updateStats();
-                renderEntries();
-                renderSkills();
-                
-                document.getElementById('journalForm').reset();
-                alert('✅ Journal entry saved successfully!');
-            }
+            await saveData();
+            updateStats();
+            renderEntries();
+            renderSkills();
+            
+            document.getElementById('journalForm').reset();
+            alert('✅ Journal entry saved successfully!');
         });
 
-        // Skill form submission
+        // Skill form
         document.getElementById('skillForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const skill = {
+            skills.push({
                 id: Date.now(),
                 name: document.getElementById('skillName').value,
                 level: document.getElementById('skillLevel').value,
@@ -855,22 +1101,17 @@
                 context: document.getElementById('skillContext').value,
                 dateAdded: new Date().toISOString(),
                 timesUsed: 0
-            };
+            });
 
-            skills.push(skill);
             stats.totalSkills = skills.length;
-
-            const saved = await saveData();
-            if (saved) {
-                updateStats();
-                renderSkills();
-                
-                document.getElementById('skillForm').reset();
-                alert('✅ Skill added successfully!');
-            }
+            await saveData();
+            updateStats();
+            renderSkills();
+            
+            document.getElementById('skillForm').reset();
+            alert('✅ Skill added successfully!');
         });
 
-        // Update stats display
         function updateStats() {
             document.getElementById('totalEntries').textContent = stats.totalEntries;
             document.getElementById('totalSkills').textContent = stats.totalSkills;
@@ -878,7 +1119,6 @@
             document.getElementById('totalAchievements').textContent = stats.totalAchievements;
         }
 
-        // Calculate current streak
         function calculateStreak() {
             if (journalEntries.length === 0) {
                 stats.currentStreak = 0;
@@ -886,12 +1126,9 @@
             }
 
             let streak = 1;
-            const today = new Date().setHours(0, 0, 0, 0);
-            
             for (let i = 0; i < journalEntries.length - 1; i++) {
                 const current = new Date(journalEntries[i].date).setHours(0, 0, 0, 0);
                 const next = new Date(journalEntries[i + 1].date).setHours(0, 0, 0, 0);
-                
                 const diffDays = (current - next) / (1000 * 60 * 60 * 24);
                 
                 if (diffDays === 1) {
@@ -900,11 +1137,9 @@
                     break;
                 }
             }
-            
             stats.currentStreak = streak;
         }
 
-        // Render journal entries
         function renderEntries() {
             const container = document.getElementById('entriesList');
             const searchTerm = document.getElementById('searchEntries')?.value.toLowerCase() || '';
@@ -922,47 +1157,14 @@
             container.innerHTML = filtered.map(entry => `
                 <div class="entry-card">
                     <h3>${new Date(entry.date).toLocaleDateString('en-US', { 
-                        weekday: 'long', 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
+                        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
                     })}</h3>
                     <div class="date">${entry.project ? `📁 ${entry.project}` : ''}</div>
-                    
-                    ${entry.achievements ? `
-                        <div class="content-text">
-                            <strong>🎯 Achievements:</strong><br>
-                            ${entry.achievements}
-                        </div>
-                    ` : ''}
-                    
-                    ${entry.challenges ? `
-                        <div class="content-text">
-                            <strong>⚡ Challenges:</strong><br>
-                            ${entry.challenges}
-                        </div>
-                    ` : ''}
-                    
-                    ${entry.lessonsLearned ? `
-                        <div class="content-text">
-                            <strong>💡 Learned:</strong><br>
-                            ${entry.lessonsLearned}
-                        </div>
-                    ` : ''}
-                    
-                    ${entry.lessonsToLearn ? `
-                        <div class="content-text">
-                            <strong>📚 Want to Learn:</strong><br>
-                            ${entry.lessonsToLearn}
-                        </div>
-                    ` : ''}
-                    
-                    ${entry.skillsUsed.length > 0 ? `
-                        <div class="tags">
-                            ${entry.skillsUsed.map(skill => `<span class="tag">${skill}</span>`).join('')}
-                        </div>
-                    ` : ''}
-                    
+                    ${entry.achievements ? `<div class="content-text"><strong>🎯 Achievements:</strong><br>${entry.achievements}</div>` : ''}
+                    ${entry.challenges ? `<div class="content-text"><strong>⚡ Challenges:</strong><br>${entry.challenges}</div>` : ''}
+                    ${entry.lessonsLearned ? `<div class="content-text"><strong>💡 Learned:</strong><br>${entry.lessonsLearned}</div>` : ''}
+                    ${entry.lessonsToLearn ? `<div class="content-text"><strong>📚 Want to Learn:</strong><br>${entry.lessonsToLearn}</div>` : ''}
+                    ${entry.skillsUsed.length > 0 ? `<div class="tags">${entry.skillsUsed.map(skill => `<span class="tag">${skill}</span>`).join('')}</div>` : ''}
                     <div class="action-buttons" style="margin-top: 15px;">
                         <button class="btn btn-sm btn-danger" onclick="deleteEntry(${entry.id})">🗑️ Delete</button>
                     </div>
@@ -970,9 +1172,8 @@
             `).join('');
         }
 
-        // Delete entry
         async function deleteEntry(id) {
-            if (confirm('Are you sure you want to delete this entry?')) {
+            if (confirm('Delete this entry?')) {
                 journalEntries = journalEntries.filter(e => e.id !== id);
                 stats.totalEntries = journalEntries.length;
                 await saveData();
@@ -981,13 +1182,9 @@
             }
         }
 
-        // Render skills
         function renderSkills() {
             const container = document.getElementById('skillsList');
-            
-            const filtered = currentFilter === 'all' 
-                ? skills 
-                : skills.filter(s => s.category === currentFilter);
+            const filtered = currentFilter === 'all' ? skills : skills.filter(s => s.category === currentFilter);
 
             if (filtered.length === 0) {
                 container.innerHTML = '<div class="empty-state"><p>No skills found. Add your first skill!</p></div>';
@@ -1014,7 +1211,6 @@
             `).join('');
         }
 
-        // Filter skills
         function filterSkills(category) {
             currentFilter = category;
             document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
@@ -1022,9 +1218,8 @@
             renderSkills();
         }
 
-        // Delete skill
         async function deleteSkill(id) {
-            if (confirm('Are you sure you want to delete this skill?')) {
+            if (confirm('Delete this skill?')) {
                 skills = skills.filter(s => s.id !== id);
                 stats.totalSkills = skills.length;
                 await saveData();
@@ -1033,12 +1228,11 @@
             }
         }
 
-        // Generate insights
         function generateInsights() {
             const container = document.getElementById('insightsContent');
             
             if (journalEntries.length === 0 && skills.length === 0) {
-                container.innerHTML = '<div class="empty-state"><p>Start journaling and adding skills to see personalized insights!</p></div>';
+                container.innerHTML = '<div class="empty-state"><p>Start journaling to see insights!</p></div>';
                 return;
             }
 
@@ -1055,65 +1249,34 @@
                 .map(([skill, count]) => ({ skill, count }));
 
             const goalAlignment = recentEntries.filter(e => e.goalProgress === 'aligned').length;
-            const learningOpps = recentEntries.filter(e => e.goalProgress === 'learning').length;
             const expertSkills = skills.filter(s => s.level === 'expert' || s.level === 'advanced');
 
             container.innerHTML = `
                 <div class="insight-card">
                     <h3>🎯 Career Focus Analysis</h3>
                     <ul>
-                        <li><strong>${goalAlignment}</strong> of your last ${recentEntries.length} entries were aligned with your career goals</li>
-                        <li><strong>${learningOpps}</strong> learning opportunities identified</li>
-                        <li>Your goal alignment rate is <strong>${recentEntries.length > 0 ? Math.round(goalAlignment/recentEntries.length * 100) : 0}%</strong></li>
-                        ${goalAlignment < 5 && recentEntries.length >= 10 ? '<li>⚠️ Consider refocusing on goal-aligned work or reassessing your goals</li>' : ''}
+                        <li><strong>${goalAlignment}</strong> of your last ${recentEntries.length} entries aligned with goals</li>
+                        <li>Goal alignment: <strong>${recentEntries.length > 0 ? Math.round(goalAlignment/recentEntries.length * 100) : 0}%</strong></li>
                     </ul>
                 </div>
-
                 ${topSkills.length > 0 ? `
                 <div class="insight-card">
-                    <h3>💼 Most Used Skills (Last ${recentEntries.length} Days)</h3>
+                    <h3>💼 Most Used Skills</h3>
                     <ul>
-                        ${topSkills.map(({ skill, count }) => `
-                            <li><strong>${skill}</strong> - used ${count} times</li>
-                        `).join('')}
+                        ${topSkills.map(({ skill, count }) => `<li><strong>${skill}</strong> - used ${count} times</li>`).join('')}
                     </ul>
-                    <p style="margin-top: 15px; opacity: 0.9;">These are your "money skills" - highlight them in applications!</p>
-                </div>
-                ` : ''}
-
+                </div>` : ''}
                 <div class="insight-card">
-                    <h3>🚀 Strengths for Job Applications</h3>
+                    <h3>🚀 Your Strengths</h3>
                     <ul>
-                        <li>You have <strong>${expertSkills.length}</strong> advanced/expert level skills</li>
-                        <li>Total professional skills tracked: <strong>${skills.length}</strong></li>
-                        <li>Active skill development streak: <strong>${stats.currentStreak} days</strong></li>
-                        ${expertSkills.length > 0 ? `<li>Top expertise: ${expertSkills.slice(0, 3).map(s => s.name).join(', ')}</li>` : ''}
+                        <li>Advanced/Expert skills: <strong>${expertSkills.length}</strong></li>
+                        <li>Total skills tracked: <strong>${skills.length}</strong></li>
+                        <li>Current streak: <strong>${stats.currentStreak} days</strong></li>
                     </ul>
                 </div>
-
-                ${journalEntries.length > 0 ? `
-                <div class="insight-card">
-                    <h3>📚 Learning Path Recommendations</h3>
-                    <ul>
-                        ${journalEntries.slice(0, 5).map(e => e.lessonsToLearn).filter(l => l).slice(0, 3).map(lesson => `
-                            <li>${lesson}</li>
-                        `).join('') || '<li>Keep journaling to identify learning opportunities!</li>'}
-                    </ul>
-                </div>
-
-                <div class="insight-card">
-                    <h3>💪 Recent Achievements</h3>
-                    <ul>
-                        ${journalEntries.slice(0, 5).map(e => e.achievements).filter(a => a).slice(0, 3).map(achievement => `
-                            <li>${achievement.substring(0, 150)}${achievement.length > 150 ? '...' : ''}</li>
-                        `).join('') || '<li>Record your wins to track your progress!</li>'}
-                    </ul>
-                </div>
-                ` : ''}
             `;
         }
 
-        // Export functions
         function exportResume() {
             const resumeData = {
                 skills: skills.map(s => ({
@@ -1122,18 +1285,13 @@
                     years: s.yearsExperience,
                     category: s.category
                 })),
-                recentAchievements: journalEntries
-                    .slice(0, 20)
-                    .map(e => e.achievements)
-                    .filter(a => a),
-                topSkills: skills
-                    .filter(s => s.level === 'expert' || s.level === 'advanced')
-                    .map(s => s.name),
-                professionalSummary: `Professional with ${stats.currentStreak}+ day continuous learning streak, ${stats.totalAchievements} documented achievements, and expertise in ${skills.filter(s => s.level === 'expert').length} areas.`
+                recentAchievements: journalEntries.slice(0, 20).map(e => e.achievements).filter(a => a),
+                topSkills: skills.filter(s => s.level === 'expert' || s.level === 'advanced').map(s => s.name),
+                professionalSummary: `Professional with ${stats.currentStreak}+ day streak, ${stats.totalAchievements} achievements.`
             };
 
             downloadJSON(resumeData, 'resume-data.json');
-            alert('✅ Resume data exported! Use this in your resume builder or share with recruiters.');
+            alert('✅ Resume data exported!');
         }
 
         function exportSkillsMatrix() {
@@ -1144,7 +1302,6 @@
                 certifications: skills.filter(s => s.category === 'certifications'),
                 domain: skills.filter(s => s.category === 'domain')
             };
-
             downloadJSON(matrix, 'skills-matrix.json');
         }
 
@@ -1155,7 +1312,6 @@
                 stats,
                 exportDate: new Date().toISOString()
             };
-
             downloadJSON(allData, 'career-journal-backup.json');
         }
 
@@ -1169,52 +1325,24 @@
             URL.revokeObjectURL(url);
         }
 
-        // Job matching
         document.getElementById('jobMatchForm').addEventListener('submit', (e) => {
             e.preventDefault();
-
             const jobDesc = document.getElementById('jobDescription').value.toLowerCase();
-            const matchingSkills = skills.filter(skill => 
-                jobDesc.includes(skill.name.toLowerCase())
-            );
-
+            const matchingSkills = skills.filter(skill => jobDesc.includes(skill.name.toLowerCase()));
             const matchPercentage = skills.length > 0 ? Math.round((matchingSkills.length / skills.length) * 100) : 0;
 
-            const resultsContainer = document.getElementById('matchResults');
-            resultsContainer.innerHTML = `
+            document.getElementById('matchResults').innerHTML = `
                 <div class="insight-card">
-                    <h3>🎯 Job Match Analysis</h3>
-                    <p style="font-size: 1.5em; margin: 15px 0;">
-                        <strong>${matchPercentage}% Match</strong>
-                    </p>
-                    <p>You have <strong>${matchingSkills.length}</strong> matching skills from your database!</p>
-                    
+                    <h3>🎯 Job Match: ${matchPercentage}%</h3>
+                    <p>Matching skills: <strong>${matchingSkills.length}</strong></p>
                     ${matchingSkills.length > 0 ? `
-                    <h4 style="margin-top: 20px;">✅ Your Matching Skills:</h4>
+                    <h4 style="margin-top: 20px;">✅ Your Matches:</h4>
                     <ul>
-                        ${matchingSkills.map(s => `
-                            <li><strong>${s.name}</strong> (${s.level}) - ${s.context.substring(0, 80)}...</li>
-                        `).join('')}
-                    </ul>
-                    ` : ''}
-
-                    ${matchingSkills.length === 0 ? '<p style="margin-top: 15px;">⚠️ No direct skill matches found. Consider if you have transferable skills or if this role requires new learning.</p>' : ''}
-
-                    <div style="margin-top: 25px;">
-                        <h4>📝 Suggested Action Items:</h4>
-                        <ul>
-                            ${matchingSkills.length > 0 ? `<li>Highlight these ${matchingSkills.length} skills in your resume</li>` : ''}
-                            <li>Prepare specific examples from your journal for each skill</li>
-                            <li>Review your achievements for relevant stories</li>
-                            ${matchingSkills.length < 3 ? '<li>Consider upskilling in the key requirements before applying</li>' : ''}
-                        </ul>
-                    </div>
+                        ${matchingSkills.map(s => `<li><strong>${s.name}</strong> (${s.level})</li>`).join('')}
+                    </ul>` : '<p>⚠️ No direct matches found.</p>'}
                 </div>
             `;
         });
-
-        // Initialize on load
-        init();
     </script>
 </body>
 </html>
