@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Growth Journal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .tab:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            margin-left: 10px;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .entry-list {
+            margin-top: 20px;
+        }
+
+        .entry-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .entry-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .entry-card .date {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .entry-card .content-text {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .entry-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+
+        .skill-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .skill-info {
+            flex: 1;
+        }
+
+        .skill-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .skill-meta {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .skill-level {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .level-beginner { background: #ffc107; color: #000; }
+        .level-intermediate { background: #17a2b8; color: white; }
+        .level-advanced { background: #28a745; color: white; }
+        .level-expert { background: #6f42c1; color: white; }
+
+        .insights-section {
+            margin-top: 30px;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .insight-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .insight-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .insight-card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .insight-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .export-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .export-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1em;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 8px 15px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .chip:hover {
+            background: #d0d0d0;
+        }
+
+        .chip.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.9em;
+        }
+
+        .prompt-section {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .prompt-section h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .prompt-section p {
+            color: #856404;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .storage-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .storage-indicator.cloud {
+            border: 2px solid #28a745;
+            color: #28a745;
+        }
+
+        .storage-indicator.local {
+            border: 2px solid #ffc107;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+            }
+            
+            .tab {
+                padding: 12px 20px;
+                font-size: 0.9em;
+                white-space: nowrap;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="storage-indicator" id="storageIndicator">💾 Loading...</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Career Growth Journal</h1>
+            <p>Your personal professional database and AI-powered career coach</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="totalEntries">0</h3>
+                    <p>Journal Entries</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalSkills">0</h3>
+                    <p>Skills Tracked</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="currentStreak">0</h3>
+                    <p>Day Streak</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalAchievements">0</h3>
+                    <p>Achievements</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('journal')">📝 Daily Journal</button>
+            <button class="tab" onclick="switchTab('skills')">💼 Skills Database</button>
+            <button class="tab" onclick="switchTab('insights')">💡 Career Insights</button>
+            <button class="tab" onclick="switchTab('export')">📤 Export & Applications</button>
+        </div>
+
+        <div class="content">
+            <!-- Daily Journal Tab -->
+            <div id="journal" class="tab-content active">
+                <h2>Today's Reflection</h2>
+                <p style="color: #666; margin-bottom: 25px;">Take a moment to reflect on your professional growth today.</p>
+
+                <div class="prompt-section">
+                    <h4>💭 Guided Prompts</h4>
+                    <p>Answer these questions to capture your professional journey and build your career database.</p>
+                </div>
+
+                <form id="journalForm">
+                    <div class="form-group">
+                        <label>What challenges did you face today?</label>
+                        <textarea id="challenges" placeholder="Describe the obstacles, difficult tasks, or problems you encountered..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What did you achieve today?</label>
+                        <textarea id="achievements" placeholder="List your accomplishments, completed tasks, or wins (big or small)..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What did you learn today?</label>
+                        <textarea id="lessonsLearned" placeholder="What new knowledge, insights, or skills did you gain?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What do you want to learn next?</label>
+                        <textarea id="lessonsToLearn" placeholder="What skills, technologies, or areas do you want to explore?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Skills used today (comma-separated)</label>
+                        <input type="text" id="skillsUsed" placeholder="e.g., Python, Project Management, Public Speaking, SQL">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Project/Context</label>
+                        <input type="text" id="project" placeholder="What project or area of work was this related to?">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Career Goal Progress</label>
+                        <select id="goalProgress">
+                            <option value="">Select...</option>
+                            <option value="aligned">Directly aligned with my goals</option>
+                            <option value="somewhat">Somewhat related to my goals</option>
+                            <option value="neutral">Neutral/Maintenance work</option>
+                            <option value="learning">Learning opportunity</option>
+                            <option value="misaligned">Not aligned with my goals</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn">💾 Save Entry</button>
+                </form>
+
+                <div class="entry-list">
+                    <h3 style="margin: 30px 0 20px 0;">Recent Entries</h3>
+                    <div class="search-bar">
+                        <input type="text" id="searchEntries" placeholder="🔍 Search entries..." oninput="renderEntries()">
+                    </div>
+                    <div id="entriesList"></div>
+                </div>
+            </div>
+
+            <!-- Skills Database Tab -->
+            <div id="skills" class="tab-content">
+                <h2>Skills Database</h2>
+                <p style="color: #666; margin-bottom: 25px;">Track and manage your professional skillset for job applications.</p>
+
+                <form id="skillForm">
+                    <div class="form-group">
+                        <label>Skill Name</label>
+                        <input type="text" id="skillName" placeholder="e.g., Python, Leadership, Data Analysis" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Proficiency Level</label>
+                        <select id="skillLevel" required>
+                            <option value="">Select level...</option>
+                            <option value="beginner">Beginner - Learning the basics</option>
+                            <option value="intermediate">Intermediate - Can work independently</option>
+                            <option value="advanced">Advanced - Can mentor others</option>
+                            <option value="expert">Expert - Industry recognized</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="skillCategory" required>
+                            <option value="">Select category...</option>
+                            <option value="technical">Technical/Hard Skills</option>
+                            <option value="soft">Soft Skills</option>
+                            <option value="tools">Tools & Software</option>
+                            <option value="languages">Programming Languages</option>
+                            <option value="certifications">Certifications</option>
+                            <option value="domain">Domain Knowledge</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Years of Experience</label>
+                        <input type="number" id="skillYears" min="0" step="0.5" placeholder="e.g., 2.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Context/Examples</label>
+                        <textarea id="skillContext" placeholder="Describe how you've used this skill, projects where you applied it, achievements..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn">➕ Add Skill</button>
+                </form>
+
+                <div style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 20px;">Your Skills</h3>
+                    <div class="filter-chips">
+                        <div class="chip active" onclick="filterSkills('all')">All</div>
+                        <div class="chip" onclick="filterSkills('technical')">Technical</div>
+                        <div class="chip" onclick="filterSkills('soft')">Soft Skills</div>
+                        <div class="chip" onclick="filterSkills('tools')">Tools</div>
+                        <div class="chip" onclick="filterSkills('languages')">Languages</div>
+                        <div class="chip" onclick="filterSkills('certifications')">Certifications</div>
+                        <div class="chip" onclick="filterSkills('domain')">Domain</div>
+                    </div>
+                    <div id="skillsList"></div>
+                </div>
+            </div>
+
+            <!-- Career Insights Tab -->
+            <div id="insights" class="tab-content">
+                <h2>Career Insights & Coaching</h2>
+                <p style="color: #666; margin-bottom: 25px;">AI-generated insights based on your journal entries and skills.</p>
+
+                <div class="insights-section" id="insightsContent">
+                    <div class="loading">Analyzing your career data...</div>
+                </div>
+            </div>
+
+            <!-- Export & Applications Tab -->
+            <div id="export" class="tab-content">
+                <h2>Export & Job Applications</h2>
+                <p style="color: #666; margin-bottom: 25px;">Generate customized materials for your job search.</p>
+
+                <div class="export-section">
+                    <h3>📋 Export Your Data</h3>
+                    <div class="export-buttons">
+                        <button class="btn" onclick="exportResume()">📄 Generate Resume Data</button>
+                        <button class="btn" onclick="exportSkillsMatrix()">🎯 Skills Matrix</button>
+                        <button class="btn" onclick="exportAllData()">💾 Download All Data (JSON)</button>
+                    </div>
+                </div>
+
+                <div class="export-section" style="margin-top: 20px;">
+                    <h3>🎯 Job Application Assistant</h3>
+                    <form id="jobMatchForm">
+                        <div class="form-group">
+                            <label>Paste Job Description</label>
+                            <textarea id="jobDescription" placeholder="Paste the full job description here..." style="min-height: 200px;"></textarea>
+                        </div>
+                        <button type="submit" class="btn">🔍 Analyze Match & Generate Materials</button>
+                    </form>
+                    <div id="matchResults" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dual storage system: Try Claude storage first, fallback to localStorage
+        const StorageAdapter = {
+            storageType: 'unknown',
+            
+            async init() {
+                // Test if window.storage API is available (Claude environment)
+                if (typeof window.storage !== 'undefined') {
+                    try {
+                        await window.storage.get('test-key');
+                        this.storageType = 'claude';
+                        console.log('✅ Using Claude persistent storage');
+                        return true;
+                    } catch (e) {
+                        console.log('Claude storage not available, falling back to localStorage');
+                    }
+                }
+                
+                // Fallback to localStorage
+                if (typeof localStorage !== 'undefined') {
+                    this.storageType = 'local';
+                    console.log('📱 Using browser localStorage');
+                    return true;
+                }
+                
+                console.error('No storage available!');
+                return false;
+            },
+            
+            async get(key) {
+                if (this.storageType === 'claude') {
+                    try {
+                        const result = await window.storage.get(key);
+                        return result ? result.value : null;
+                    } catch (e) {
+                        return null;
+                    }
+                } else {
+                    return localStorage.getItem(key);
+                }
+            },
+            
+            async set(key, value) {
+                if (this.storageType === 'claude') {
+                    try {
+                        await window.storage.set(key, value);
+                        return true;
+                    } catch (e) {
+                        console.error('Storage error:', e);
+                        return false;
+                    }
+                } else {
+                    localStorage.setItem(key, value);
+                    return true;
+                }
+            },
+            
+            getIndicator() {
+                const indicator = document.getElementById('storageIndicator');
+                if (this.storageType === 'claude') {
+                    indicator.textContent = '☁️ Cloud Storage';
+                    indicator.className = 'storage-indicator cloud';
+                } else if (this.storageType === 'local') {
+                    indicator.textContent = '💾 Local Storage';
+                    indicator.className = 'storage-indicator local';
+                } else {
+                    indicator.textContent = '⚠️ No Storage';
+                    indicator.style.display = 'none';
+                }
+            }
+        };
+
+        // Storage using adaptive storage system
+        let currentFilter = 'all';
+        let journalEntries = [];
+        let skills = [];
+        let stats = {
+            totalEntries: 0,
+            totalSkills: 0,
+            currentStreak: 0,
+            totalAchievements: 0
+        };
+
+        // Initialize app
+        async function init() {
+            await StorageAdapter.init();
+            StorageAdapter.getIndicator();
+            await loadData();
+            updateStats();
+            renderEntries();
+            renderSkills();
+            generateInsights();
+        }
+
+        // Load data from persistent storage
+        async function loadData() {
+            try {
+                const entriesData = await StorageAdapter.get('journal-entries');
+                if (entriesData) {
+                    journalEntries = JSON.parse(entriesData);
+                }
+
+                const skillsData = await StorageAdapter.get('skills-database');
+                if (skillsData) {
+                    skills = JSON.parse(skillsData);
+                }
+
+                const statsData = await StorageAdapter.get('career-stats');
+                if (statsData) {
+                    stats = JSON.parse(statsData);
+                }
+            } catch (error) {
+                console.log('No existing data found, starting fresh');
+                journalEntries = [];
+                skills = [];
+            }
+        }
+
+        // Save data to persistent storage
+        async function saveData() {
+            try {
+                await StorageAdapter.set('journal-entries', JSON.stringify(journalEntries));
+                await StorageAdapter.set('skills-database', JSON.stringify(skills));
+                await StorageAdapter.set('career-stats', JSON.stringify(stats));
+                return true;
+            } catch (error) {
+                console.error('Error saving data:', error);
+                alert('Error saving data. Please try again.');
+                return false;
+            }
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+
+            if (tabName === 'insights') {
+                generateInsights();
+            }
+        }
+
+        // Journal form submission
+        document.getElementById('journalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const entry = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                challenges: document.getElementById('challenges').value,
+                achievements: document.getElementById('achievements').value,
+                lessonsLearned: document.getElementById('lessonsLearned').value,
+                lessonsToLearn: document.getElementById('lessonsToLearn').value,
+                skillsUsed: document.getElementById('skillsUsed').value.split(',').map(s => s.trim()).filter(s => s),
+                project: document.getElementById('project').value,
+                goalProgress: document.getElementById('goalProgress').value
+            };
+
+            journalEntries.unshift(entry);
+            
+            // Update stats
+            stats.totalEntries = journalEntries.length;
+            if (entry.achievements.length > 20) {
+                stats.totalAchievements++;
+            }
+            calculateStreak();
+
+            // Auto-add skills used to skills database
+            entry.skillsUsed.forEach(skillName => {
+                if (!skills.find(s => s.name.toLowerCase() === skillName.toLowerCase())) {
+                    skills.push({
+                        id: Date.now() + Math.random(),
+                        name: skillName,
+                        level: 'intermediate',
+                        category: 'technical',
+                        yearsExperience: 0,
+                        context: `Used in: ${entry.project || 'recent work'}`,
+                        dateAdded: new Date().toISOString(),
+                        timesUsed: 1
+                    });
+                } else {
+                    const skill = skills.find(s => s.name.toLowerCase() === skillName.toLowerCase());
+                    skill.timesUsed = (skill.timesUsed || 0) + 1;
+                }
+            });
+
+            stats.totalSkills = skills.length;
+
+            const saved = await saveData();
+            if (saved) {
+                updateStats();
+                renderEntries();
+                renderSkills();
+                
+                document.getElementById('journalForm').reset();
+                alert('✅ Journal entry saved successfully!');
+            }
+        });
+
+        // Skill form submission
+        document.getElementById('skillForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const skill = {
+                id: Date.now(),
+                name: document.getElementById('skillName').value,
+                level: document.getElementById('skillLevel').value,
+                category: document.getElementById('skillCategory').value,
+                yearsExperience: parseFloat(document.getElementById('skillYears').value) || 0,
+                context: document.getElementById('skillContext').value,
+                dateAdded: new Date().toISOString(),
+                timesUsed: 0
+            };
+
+            skills.push(skill);
+            stats.totalSkills = skills.length;
+
+            const saved = await saveData();
+            if (saved) {
+                updateStats();
+                renderSkills();
+                
+                document.getElementById('skillForm').reset();
+                alert('✅ Skill added successfully!');
+            }
+        });
+
+        // Update stats display
+        function updateStats() {
+            document.getElementById('totalEntries').textContent = stats.totalEntries;
+            document.getElementById('totalSkills').textContent = stats.totalSkills;
+            document.getElementById('currentStreak').textContent = stats.currentStreak;
+            document.getElementById('totalAchievements').textContent = stats.totalAchievements;
+        }
+
+        // Calculate current streak
+        function calculateStreak() {
+            if (journalEntries.length === 0) {
+                stats.currentStreak = 0;
+                return;
+            }
+
+            let streak = 1;
+            const today = new Date().setHours(0, 0, 0, 0);
+            
+            for (let i = 0; i < journalEntries.length - 1; i++) {
+                const current = new Date(journalEntries[i].date).setHours(0, 0, 0, 0);
+                const next = new Date(journalEntries[i + 1].date).setHours(0, 0, 0, 0);
+                
+                const diffDays = (current - next) / (1000 * 60 * 60 * 24);
+                
+                if (diffDays === 1) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            
+            stats.currentStreak = streak;
+        }
+
+        // Render journal entries
+        function renderEntries() {
+            const container = document.getElementById('entriesList');
+            const searchTerm = document.getElementById('searchEntries')?.value.toLowerCase() || '';
+            
+            const filtered = journalEntries.filter(entry => {
+                const searchText = `${entry.challenges} ${entry.achievements} ${entry.lessonsLearned} ${entry.project}`.toLowerCase();
+                return searchText.includes(searchTerm);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No entries found. Start your journal today!</p></div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(entry => `
+                <div class="entry-card">
+                    <h3>${new Date(entry.date).toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })}</h3>
+                    <div class="date">${entry.project ? `📁 ${entry.project}` : ''}</div>
+                    
+                    ${entry.achievements ? `
+                        <div class="content-text">
+                            <strong>🎯 Achievements:</strong><br>
+                            ${entry.achievements}
+                        </div>
+                    ` : ''}
+                    
+                    ${entry.challenges ? `
+                        <div class="content-text">
+                            <strong>⚡ Challenges:</strong><br>
+                            ${entry.challenges}
+                        </div>
+                    ` : ''}
+                    
+                    ${entry.lessonsLearned ? `
+                        <div class="content-text">
+                            <strong>💡 Learned:</strong><br>
+                            ${entry.lessonsLearned}
+                        </div>
+                    ` : ''}
+                    
+                    ${entry.lessonsToLearn ? `
+                        <div class="content-text">
+                            <strong>📚 Want to Learn:</strong><br>
+                            ${entry.lessonsToLearn}
+                        </div>
+                    ` : ''}
+                    
+                    ${entry.skillsUsed.length > 0 ? `
+                        <div class="tags">
+                            ${entry.skillsUsed.map(skill => `<span class="tag">${skill}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    <div class="action-buttons" style="margin-top: 15px;">
+                        <button class="btn btn-sm btn-danger" onclick="deleteEntry(${entry.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Delete entry
+        async function deleteEntry(id) {
+            if (confirm('Are you sure you want to delete this entry?')) {
+                journalEntries = journalEntries.filter(e => e.id !== id);
+                stats.totalEntries = journalEntries.length;
+                await saveData();
+                updateStats();
+                renderEntries();
+            }
+        }
+
+        // Render skills
+        function renderSkills() {
+            const container = document.getElementById('skillsList');
+            
+            const filtered = currentFilter === 'all' 
+                ? skills 
+                : skills.filter(s => s.category === currentFilter);
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No skills found. Add your first skill!</p></div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(skill => `
+                <div class="skill-item">
+                    <div class="skill-info">
+                        <div class="skill-name">
+                            ${skill.name}
+                            <span class="skill-level level-${skill.level}">${skill.level}</span>
+                        </div>
+                        <div class="skill-meta">
+                            ${skill.yearsExperience > 0 ? `${skill.yearsExperience} years` : 'New'} 
+                            ${skill.timesUsed ? `• Used ${skill.timesUsed} times` : ''}
+                            ${skill.context ? `<br>${skill.context.substring(0, 100)}...` : ''}
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-sm btn-danger" onclick="deleteSkill(${skill.id})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter skills
+        function filterSkills(category) {
+            currentFilter = category;
+            document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
+            event.target.classList.add('active');
+            renderSkills();
+        }
+
+        // Delete skill
+        async function deleteSkill(id) {
+            if (confirm('Are you sure you want to delete this skill?')) {
+                skills = skills.filter(s => s.id !== id);
+                stats.totalSkills = skills.length;
+                await saveData();
+                updateStats();
+                renderSkills();
+            }
+        }
+
+        // Generate insights
+        function generateInsights() {
+            const container = document.getElementById('insightsContent');
+            
+            if (journalEntries.length === 0 && skills.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>Start journaling and adding skills to see personalized insights!</p></div>';
+                return;
+            }
+
+            const recentEntries = journalEntries.slice(0, 10);
+            const allSkillsUsed = recentEntries.flatMap(e => e.skillsUsed);
+            const skillFrequency = {};
+            allSkillsUsed.forEach(skill => {
+                skillFrequency[skill] = (skillFrequency[skill] || 0) + 1;
+            });
+
+            const topSkills = Object.entries(skillFrequency)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([skill, count]) => ({ skill, count }));
+
+            const goalAlignment = recentEntries.filter(e => e.goalProgress === 'aligned').length;
+            const learningOpps = recentEntries.filter(e => e.goalProgress === 'learning').length;
+            const expertSkills = skills.filter(s => s.level === 'expert' || s.level === 'advanced');
+
+            container.innerHTML = `
+                <div class="insight-card">
+                    <h3>🎯 Career Focus Analysis</h3>
+                    <ul>
+                        <li><strong>${goalAlignment}</strong> of your last ${recentEntries.length} entries were aligned with your career goals</li>
+                        <li><strong>${learningOpps}</strong> learning opportunities identified</li>
+                        <li>Your goal alignment rate is <strong>${recentEntries.length > 0 ? Math.round(goalAlignment/recentEntries.length * 100) : 0}%</strong></li>
+                        ${goalAlignment < 5 && recentEntries.length >= 10 ? '<li>⚠️ Consider refocusing on goal-aligned work or reassessing your goals</li>' : ''}
+                    </ul>
+                </div>
+
+                ${topSkills.length > 0 ? `
+                <div class="insight-card">
+                    <h3>💼 Most Used Skills (Last ${recentEntries.length} Days)</h3>
+                    <ul>
+                        ${topSkills.map(({ skill, count }) => `
+                            <li><strong>${skill}</strong> - used ${count} times</li>
+                        `).join('')}
+                    </ul>
+                    <p style="margin-top: 15px; opacity: 0.9;">These are your "money skills" - highlight them in applications!</p>
+                </div>
+                ` : ''}
+
+                <div class="insight-card">
+                    <h3>🚀 Strengths for Job Applications</h3>
+                    <ul>
+                        <li>You have <strong>${expertSkills.length}</strong> advanced/expert level skills</li>
+                        <li>Total professional skills tracked: <strong>${skills.length}</strong></li>
+                        <li>Active skill development streak: <strong>${stats.currentStreak} days</strong></li>
+                        ${expertSkills.length > 0 ? `<li>Top expertise: ${expertSkills.slice(0, 3).map(s => s.name).join(', ')}</li>` : ''}
+                    </ul>
+                </div>
+
+                ${journalEntries.length > 0 ? `
+                <div class="insight-card">
+                    <h3>📚 Learning Path Recommendations</h3>
+                    <ul>
+                        ${journalEntries.slice(0, 5).map(e => e.lessonsToLearn).filter(l => l).slice(0, 3).map(lesson => `
+                            <li>${lesson}</li>
+                        `).join('') || '<li>Keep journaling to identify learning opportunities!</li>'}
+                    </ul>
+                </div>
+
+                <div class="insight-card">
+                    <h3>💪 Recent Achievements</h3>
+                    <ul>
+                        ${journalEntries.slice(0, 5).map(e => e.achievements).filter(a => a).slice(0, 3).map(achievement => `
+                            <li>${achievement.substring(0, 150)}${achievement.length > 150 ? '...' : ''}</li>
+                        `).join('') || '<li>Record your wins to track your progress!</li>'}
+                    </ul>
+                </div>
+                ` : ''}
+            `;
+        }
+
+        // Export functions
+        function exportResume() {
+            const resumeData = {
+                skills: skills.map(s => ({
+                    name: s.name,
+                    level: s.level,
+                    years: s.yearsExperience,
+                    category: s.category
+                })),
+                recentAchievements: journalEntries
+                    .slice(0, 20)
+                    .map(e => e.achievements)
+                    .filter(a => a),
+                topSkills: skills
+                    .filter(s => s.level === 'expert' || s.level === 'advanced')
+                    .map(s => s.name),
+                professionalSummary: `Professional with ${stats.currentStreak}+ day continuous learning streak, ${stats.totalAchievements} documented achievements, and expertise in ${skills.filter(s => s.level === 'expert').length} areas.`
+            };
+
+            downloadJSON(resumeData, 'resume-data.json');
+            alert('✅ Resume data exported! Use this in your resume builder or share with recruiters.');
+        }
+
+        function exportSkillsMatrix() {
+            const matrix = {
+                technical: skills.filter(s => s.category === 'technical' || s.category === 'languages'),
+                tools: skills.filter(s => s.category === 'tools'),
+                soft: skills.filter(s => s.category === 'soft'),
+                certifications: skills.filter(s => s.category === 'certifications'),
+                domain: skills.filter(s => s.category === 'domain')
+            };
+
+            downloadJSON(matrix, 'skills-matrix.json');
+        }
+
+        function exportAllData() {
+            const allData = {
+                journalEntries,
+                skills,
+                stats,
+                exportDate: new Date().toISOString()
+            };
+
+            downloadJSON(allData, 'career-journal-backup.json');
+        }
+
+        function downloadJSON(data, filename) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Job matching
+        document.getElementById('jobMatchForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const jobDesc = document.getElementById('jobDescription').value.toLowerCase();
+            const matchingSkills = skills.filter(skill => 
+                jobDesc.includes(skill.name.toLowerCase())
+            );
+
+            const matchPercentage = skills.length > 0 ? Math.round((matchingSkills.length / skills.length) * 100) : 0;
+
+            const resultsContainer = document.getElementById('matchResults');
+            resultsContainer.innerHTML = `
+                <div class="insight-card">
+                    <h3>🎯 Job Match Analysis</h3>
+                    <p style="font-size: 1.5em; margin: 15px 0;">
+                        <strong>${matchPercentage}% Match</strong>
+                    </p>
+                    <p>You have <strong>${matchingSkills.length}</strong> matching skills from your database!</p>
+                    
+                    ${matchingSkills.length > 0 ? `
+                    <h4 style="margin-top: 20px;">✅ Your Matching Skills:</h4>
+                    <ul>
+                        ${matchingSkills.map(s => `
+                            <li><strong>${s.name}</strong> (${s.level}) - ${s.context.substring(0, 80)}...</li>
+                        `).join('')}
+                    </ul>
+                    ` : ''}
+
+                    ${matchingSkills.length === 0 ? '<p style="margin-top: 15px;">⚠️ No direct skill matches found. Consider if you have transferable skills or if this role requires new learning.</p>' : ''}
+
+                    <div style="margin-top: 25px;">
+                        <h4>📝 Suggested Action Items:</h4>
+                        <ul>
+                            ${matchingSkills.length > 0 ? `<li>Highlight these ${matchingSkills.length} skills in your resume</li>` : ''}
+                            <li>Prepare specific examples from your journal for each skill</li>
+                            <li>Review your achievements for relevant stories</li>
+                            ${matchingSkills.length < 3 ? '<li>Consider upskilling in the key requirements before applying</li>' : ''}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
