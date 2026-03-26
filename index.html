@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Growth Journal - Secure</title>
+    <title>Career Growth Journal - Cloud Sync</title>
     <style>
         * {
             margin: 0;
@@ -18,10 +18,10 @@
             padding: 20px;
         }
 
-        /* Login Screen Styles */
+        /* Login Screen */
         .login-container {
             max-width: 450px;
-            margin: 100px auto;
+            margin: 80px auto;
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 20px;
@@ -77,6 +77,12 @@
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
+        .login-form button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .error-message {
             background: #fee;
             color: #c33;
@@ -90,17 +96,17 @@
             display: block;
         }
 
-        .setup-mode {
-            background: #e7f3ff;
-            color: #0066cc;
-            padding: 15px;
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 12px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            display: none;
         }
 
-        .setup-mode strong {
+        .success-message.show {
             display: block;
-            margin-bottom: 5px;
         }
 
         .toggle-mode {
@@ -109,15 +115,26 @@
             text-decoration: underline;
             font-size: 0.9em;
             margin-top: 15px;
+            display: inline-block;
         }
 
         .toggle-mode:hover {
             color: #764ba2;
         }
 
+        .cloud-sync-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
         .security-note {
-            background: #fff3cd;
-            color: #856404;
+            background: #e7f3ff;
+            color: #0066cc;
             padding: 15px;
             border-radius: 8px;
             margin-top: 20px;
@@ -130,12 +147,12 @@
             margin-bottom: 5px;
         }
 
-        /* Main App Styles */
+        /* Main App */
         .app-container {
             display: none;
         }
 
-        .app-container.unlocked {
+        .app-container.active {
             display: block;
         }
 
@@ -153,10 +170,41 @@
             position: relative;
         }
 
-        .logout-btn {
+        .user-info {
             position: absolute;
             top: 20px;
             right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sync-status {
+            background: #28a745;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .sync-status.syncing {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .sync-status.error {
+            background: #dc3545;
+        }
+
+        .user-email {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .logout-btn {
             background: #dc3545;
             color: white;
             border: none;
@@ -165,6 +213,7 @@
             cursor: pointer;
             font-size: 0.9em;
             font-weight: 600;
+            margin-left: 10px;
         }
 
         .logout-btn:hover {
@@ -310,9 +359,10 @@
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-secondary {
-            background: #6c757d;
-            margin-left: 10px;
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .btn-danger {
@@ -324,11 +374,14 @@
             font-size: 0.9em;
         }
 
-        .entry-card {
+        .entry-card, .skill-item, .insight-card {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 15px;
+        }
+
+        .entry-card {
             border-left: 4px solid #667eea;
         }
 
@@ -337,19 +390,13 @@
             margin-bottom: 10px;
         }
 
-        .entry-card .date {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
-
-        .entry-card .content-text {
+        .content-text {
             color: #555;
             line-height: 1.6;
             margin-bottom: 10px;
         }
 
-        .entry-card .tags {
+        .tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
@@ -366,28 +413,10 @@
 
         .skill-item {
             background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #e0e0e0;
-        }
-
-        .skill-info {
-            flex: 1;
-        }
-
-        .skill-name {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .skill-meta {
-            font-size: 0.9em;
-            color: #666;
         }
 
         .skill-level {
@@ -407,14 +436,10 @@
         .insight-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 20px;
         }
 
         .insight-card h3 {
             margin-bottom: 15px;
-            font-size: 1.3em;
         }
 
         .insight-card ul {
@@ -423,8 +448,7 @@
         }
 
         .insight-card li {
-            padding: 8px 0;
-            padding-left: 25px;
+            padding: 8px 0 8px 25px;
             position: relative;
         }
 
@@ -433,24 +457,6 @@
             position: absolute;
             left: 0;
             font-weight: bold;
-        }
-
-        .export-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-        }
-
-        .export-section h3 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .export-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
         }
 
         .search-bar input {
@@ -493,9 +499,22 @@
             color: #999;
         }
 
-        .action-buttons {
+        .export-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .export-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .export-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .prompt-section {
@@ -511,10 +530,10 @@
             margin-bottom: 10px;
         }
 
-        .prompt-section p {
-            color: #856404;
-            font-size: 0.95em;
-            line-height: 1.6;
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
         }
 
         @media (max-width: 768px) {
@@ -527,10 +546,10 @@
                 font-size: 1.8em;
             }
             
-            .logout-btn {
+            .user-info {
                 position: static;
+                flex-direction: column;
                 margin-top: 15px;
-                width: 100%;
             }
             
             .tabs {
@@ -542,53 +561,68 @@
                 font-size: 0.9em;
                 white-space: nowrap;
             }
-            
-            .content {
-                padding: 20px;
-            }
         }
     </style>
 </head>
 <body>
     <!-- Login Screen -->
     <div id="loginScreen" class="login-container">
-        <h1>🔐 Career Growth Journal</h1>
-        <p>Secure access to your professional database</p>
+        <h1>🚀 Career Growth Journal</h1>
+        <p>Cloud-synced across all your devices</p>
+        <div class="cloud-sync-badge">☁️ Firebase Cloud Sync Enabled</div>
 
         <div id="errorMessage" class="error-message"></div>
-        <div id="setupNotice" class="setup-mode" style="display: none;">
-            <strong>🎯 First Time Setup</strong>
-            Create your password to secure your career journal.
+        <div id="successMessage" class="success-message"></div>
+
+        <div id="loginTab" style="margin-top: 30px;">
+            <form id="loginForm" class="login-form">
+                <input type="email" id="loginEmail" placeholder="Email" required autocomplete="email">
+                <input type="password" id="loginPassword" placeholder="Password" required autocomplete="current-password" minlength="6">
+                <button type="submit" id="loginButton">🔓 Sign In</button>
+            </form>
+            <div class="toggle-mode" onclick="toggleAuthMode()">Don't have an account? Sign up</div>
         </div>
 
-        <form id="loginForm" class="login-form">
-            <input 
-                type="password" 
-                id="passwordInput" 
-                placeholder="Enter your password" 
-                required 
-                autocomplete="current-password"
-            >
-            <button type="submit" id="loginButton">🔓 Unlock Journal</button>
-        </form>
-
-        <div class="toggle-mode" id="toggleMode" style="display: none;">
-            Change password
+        <div id="signupTab" style="display: none; margin-top: 30px;">
+            <form id="signupForm" class="login-form">
+                <input type="email" id="signupEmail" placeholder="Email" required autocomplete="email">
+                <input type="password" id="signupPassword" placeholder="Password (min 6 characters)" required autocomplete="new-password" minlength="6">
+                <input type="password" id="signupPasswordConfirm" placeholder="Confirm Password" required autocomplete="new-password" minlength="6">
+                <button type="submit" id="signupButton">✨ Create Account</button>
+            </form>
+            <div class="toggle-mode" onclick="toggleAuthMode()">Already have an account? Sign in</div>
         </div>
 
         <div class="security-note">
-            <strong>🔒 Security Note:</strong>
-            Your password is stored locally using SHA-256 hashing. Data remains on your device. For maximum security, use a strong, unique password.
+            <strong>☁️ Cloud Sync Benefits:</strong>
+            ✓ Access from any device<br>
+            ✓ Automatic real-time sync<br>
+            ✓ Secure Firebase authentication<br>
+            ✓ Encrypted data transmission<br>
+            ✓ Never lose your data
+        </div>
+
+        <div class="security-note" style="margin-top: 15px; background: #fff3cd; color: #856404;">
+            <strong>⚙️ Setup Required:</strong>
+            To use this app, you need to configure Firebase. See the setup instructions in the code comments or README.
         </div>
     </div>
 
-    <!-- Main App (Hidden until unlocked) -->
+    <!-- Main App -->
     <div id="appContainer" class="app-container">
         <div class="container">
             <div class="header">
-                <button class="logout-btn" onclick="logout()">🔒 Lock Journal</button>
+                <div class="user-info">
+                    <div class="sync-status" id="syncStatus">
+                        <span>●</span>
+                        <span id="syncText">Synced</span>
+                    </div>
+                    <span class="user-email" id="userEmail"></span>
+                    <button class="logout-btn" onclick="logout()">Sign Out</button>
+                </div>
+                
                 <h1>🚀 Career Growth Journal</h1>
-                <p>Your personal professional database and AI-powered career coach</p>
+                <p>Your personal professional database - synced across all devices</p>
                 
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -615,15 +649,12 @@
                 <button class="tab" onclick="switchTab('skills')">💼 Skills Database</button>
                 <button class="tab" onclick="switchTab('insights')">💡 Career Insights</button>
                 <button class="tab" onclick="switchTab('export')">📤 Export & Applications</button>
-                <button class="tab" onclick="switchTab('security')">🔐 Security</button>
             </div>
 
             <div class="content">
-                <!-- Daily Journal Tab -->
+                <!-- Journal Tab -->
                 <div id="journal" class="tab-content active">
                     <h2>Today's Reflection</h2>
-                    <p style="color: #666; margin-bottom: 25px;">Take a moment to reflect on your professional growth today.</p>
-
                     <div class="prompt-section">
                         <h4>💭 Guided Prompts</h4>
                         <p>Answer these questions to capture your professional journey and build your career database.</p>
@@ -634,32 +665,26 @@
                             <label>What challenges did you face today?</label>
                             <textarea id="challenges" placeholder="Describe the obstacles, difficult tasks, or problems you encountered..."></textarea>
                         </div>
-
                         <div class="form-group">
                             <label>What did you achieve today?</label>
                             <textarea id="achievements" placeholder="List your accomplishments, completed tasks, or wins (big or small)..."></textarea>
                         </div>
-
                         <div class="form-group">
                             <label>What did you learn today?</label>
                             <textarea id="lessonsLearned" placeholder="What new knowledge, insights, or skills did you gain?"></textarea>
                         </div>
-
                         <div class="form-group">
                             <label>What do you want to learn next?</label>
                             <textarea id="lessonsToLearn" placeholder="What skills, technologies, or areas do you want to explore?"></textarea>
                         </div>
-
                         <div class="form-group">
                             <label>Skills used today (comma-separated)</label>
                             <input type="text" id="skillsUsed" placeholder="e.g., Python, Project Management, Public Speaking, SQL">
                         </div>
-
                         <div class="form-group">
                             <label>Project/Context</label>
                             <input type="text" id="project" placeholder="What project or area of work was this related to?">
                         </div>
-
                         <div class="form-group">
                             <label>Career Goal Progress</label>
                             <select id="goalProgress">
@@ -671,11 +696,10 @@
                                 <option value="misaligned">Not aligned with my goals</option>
                             </select>
                         </div>
-
                         <button type="submit" class="btn">💾 Save Entry</button>
                     </form>
 
-                    <div class="entry-list" style="margin-top: 30px;">
+                    <div style="margin-top: 30px;">
                         <h3 style="margin-bottom: 20px;">Recent Entries</h3>
                         <div class="search-bar">
                             <input type="text" id="searchEntries" placeholder="🔍 Search entries..." oninput="renderEntries()">
@@ -687,25 +711,21 @@
                 <!-- Skills Tab -->
                 <div id="skills" class="tab-content">
                     <h2>Skills Database</h2>
-                    <p style="color: #666; margin-bottom: 25px;">Track and manage your professional skillset for job applications.</p>
-
                     <form id="skillForm">
                         <div class="form-group">
                             <label>Skill Name</label>
                             <input type="text" id="skillName" placeholder="e.g., Python, Leadership, Data Analysis" required>
                         </div>
-
                         <div class="form-group">
                             <label>Proficiency Level</label>
                             <select id="skillLevel" required>
                                 <option value="">Select level...</option>
-                                <option value="beginner">Beginner - Learning the basics</option>
-                                <option value="intermediate">Intermediate - Can work independently</option>
-                                <option value="advanced">Advanced - Can mentor others</option>
-                                <option value="expert">Expert - Industry recognized</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                                <option value="expert">Expert</option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label>Category</label>
                             <select id="skillCategory" required>
@@ -718,17 +738,14 @@
                                 <option value="domain">Domain Knowledge</option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label>Years of Experience</label>
                             <input type="number" id="skillYears" min="0" step="0.5" placeholder="e.g., 2.5">
                         </div>
-
                         <div class="form-group">
                             <label>Context/Examples</label>
-                            <textarea id="skillContext" placeholder="Describe how you've used this skill, projects where you applied it, achievements..."></textarea>
+                            <textarea id="skillContext" placeholder="Describe how you've used this skill..."></textarea>
                         </div>
-
                         <button type="submit" class="btn">➕ Add Skill</button>
                     </form>
 
@@ -750,21 +767,18 @@
                 <!-- Insights Tab -->
                 <div id="insights" class="tab-content">
                     <h2>Career Insights & Coaching</h2>
-                    <p style="color: #666; margin-bottom: 25px;">AI-generated insights based on your journal entries and skills.</p>
                     <div id="insightsContent"></div>
                 </div>
 
                 <!-- Export Tab -->
                 <div id="export" class="tab-content">
                     <h2>Export & Job Applications</h2>
-                    <p style="color: #666; margin-bottom: 25px;">Generate customized materials for your job search.</p>
-
                     <div class="export-section">
                         <h3>📋 Export Your Data</h3>
                         <div class="export-buttons">
-                            <button class="btn" onclick="exportResume()">📄 Generate Resume Data</button>
+                            <button class="btn" onclick="exportResume()">📄 Resume Data</button>
                             <button class="btn" onclick="exportSkillsMatrix()">🎯 Skills Matrix</button>
-                            <button class="btn" onclick="exportAllData()">💾 Download All Data (JSON)</button>
+                            <button class="btn" onclick="exportAllData()">💾 Download All (JSON)</button>
                         </div>
                     </div>
 
@@ -775,64 +789,72 @@
                                 <label>Paste Job Description</label>
                                 <textarea id="jobDescription" placeholder="Paste the full job description here..." style="min-height: 200px;"></textarea>
                             </div>
-                            <button type="submit" class="btn">🔍 Analyze Match & Generate Materials</button>
+                            <button type="submit" class="btn">🔍 Analyze Match</button>
                         </form>
                         <div id="matchResults" style="margin-top: 20px;"></div>
-                    </div>
-                </div>
-
-                <!-- Security Tab -->
-                <div id="security" class="tab-content">
-                    <h2>🔐 Security Settings</h2>
-                    <p style="color: #666; margin-bottom: 25px;">Manage your password and data security.</p>
-
-                    <div class="export-section">
-                        <h3>Change Password</h3>
-                        <form id="changePasswordForm">
-                            <div class="form-group">
-                                <label>Current Password</label>
-                                <input type="password" id="currentPassword" required>
-                            </div>
-                            <div class="form-group">
-                                <label>New Password</label>
-                                <input type="password" id="newPassword" required minlength="6">
-                            </div>
-                            <div class="form-group">
-                                <label>Confirm New Password</label>
-                                <input type="password" id="confirmPassword" required minlength="6">
-                            </div>
-                            <button type="submit" class="btn">🔄 Update Password</button>
-                        </form>
-                    </div>
-
-                    <div class="export-section" style="margin-top: 20px; background: #fee;">
-                        <h3 style="color: #c33;">⚠️ Danger Zone</h3>
-                        <p style="color: #666; margin-bottom: 15px;">Permanently delete all your data. This cannot be undone!</p>
-                        <button class="btn btn-danger" onclick="deleteAllData()">🗑️ Delete All Data</button>
-                    </div>
-
-                    <div style="margin-top: 30px; padding: 20px; background: #e7f3ff; border-radius: 10px;">
-                        <h3 style="color: #0066cc; margin-bottom: 15px;">Security Information</h3>
-                        <ul style="color: #666; line-height: 1.8;">
-                            <li>✅ Password stored using SHA-256 hashing</li>
-                            <li>✅ All data stored locally in your browser</li>
-                            <li>✅ No data sent to any server</li>
-                            <li>✅ Auto-lock when you close the browser</li>
-                            <li>⚠️ If you forget your password, data cannot be recovered</li>
-                            <li>💡 Export backups regularly to avoid data loss</li>
-                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
     <script>
-        // Security & Authentication
-        const AUTH_KEY = 'career_journal_auth_hash';
-        const SESSION_KEY = 'career_journal_session';
+        /*
+         * ========================================
+         * FIREBASE CONFIGURATION REQUIRED
+         * ========================================
+         * 
+         * To use this app, you need to:
+         * 1. Go to https://console.firebase.google.com/
+         * 2. Create a new project (or use existing)
+         * 3. Enable Authentication → Email/Password
+         * 4. Enable Realtime Database
+         * 5. Copy your config from Project Settings → General → Your apps → Web app
+         * 6. Replace the firebaseConfig below with your config
+         * 
+         * Your config will look like this:
+         */
         
-        let isAuthenticated = false;
+        const firebaseConfig = {
+            apiKey: "AIzaSyBkCRnhWatVjXXSnLJF9QijeTyVDdxISko",
+            authDomain: "work-coach-ee77f.firebaseapp.com",
+            databaseURL: "https://work-coach-ee77f-default-rtdb.firebaseio.com",
+            projectId: "work-coach-ee77f",
+            storageBucket: "work-coach-ee77f.firebasestorage.app",
+            messagingSenderId: "994558720399",
+            appId: "1:994558720399:web:99c9cebc253bd145b233fa",
+            measurementId: "G-VY48HXVTL8"
+            };
+        // Check if Firebase is configured
+        const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY_HERE";
+
+        if (!isFirebaseConfigured) {
+            document.getElementById('errorMessage').textContent = '⚠️ Firebase not configured. See setup instructions in the code.';
+            document.getElementById('errorMessage').classList.add('show');
+            document.getElementById('loginButton').disabled = true;
+            document.getElementById('signupButton').disabled = true;
+        }
+
+        // Initialize Firebase
+        let app, auth, database, currentUser;
+
+        if (isFirebaseConfigured) {
+            try {
+                app = firebase.initializeApp(firebaseConfig);
+                auth = firebase.auth();
+                database = firebase.database();
+            } catch (error) {
+                console.error('Firebase initialization error:', error);
+                showError('Firebase configuration error. Please check your setup.');
+            }
+        }
+
+        // App State
         let currentFilter = 'all';
         let journalEntries = [];
         let skills = [];
@@ -843,186 +865,191 @@
             totalAchievements: 0
         };
 
-        // SHA-256 hash function
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        // Auth state observer
+        if (isFirebaseConfigured) {
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    currentUser = user;
+                    document.getElementById('userEmail').textContent = user.email;
+                    showApp();
+                    loadUserData();
+                } else {
+                    currentUser = null;
+                    showLogin();
+                }
+            });
         }
 
-        // Check if first time setup
-        function isFirstTimeSetup() {
-            return !localStorage.getItem(AUTH_KEY);
-        }
-
-        // Setup password for first time
-        async function setupPassword(password) {
-            const hash = await hashPassword(password);
-            localStorage.setItem(AUTH_KEY, hash);
-            return true;
-        }
-
-        // Verify password
-        async function verifyPassword(password) {
-            const storedHash = localStorage.getItem(AUTH_KEY);
-            if (!storedHash) return false;
+        // Toggle between login and signup
+        function toggleAuthMode() {
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
             
-            const inputHash = await hashPassword(password);
-            return storedHash === inputHash;
+            if (loginTab.style.display === 'none') {
+                loginTab.style.display = 'block';
+                signupTab.style.display = 'none';
+            } else {
+                loginTab.style.display = 'none';
+                signupTab.style.display = 'block';
+            }
+            
+            hideMessages();
         }
 
-        // Login form handler
+        // Sign up
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessages();
+
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupPasswordConfirm').value;
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match!');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters!');
+                return;
+            }
+
+            try {
+                document.getElementById('signupButton').disabled = true;
+                await auth.createUserWithEmailAndPassword(email, password);
+                showSuccess('Account created! Signing you in...');
+            } catch (error) {
+                showError(error.message);
+                document.getElementById('signupButton').disabled = false;
+            }
+        });
+
+        // Sign in
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const password = document.getElementById('passwordInput').value;
-            const errorMessage = document.getElementById('errorMessage');
-            
-            if (isFirstTimeSetup()) {
-                // First time setup
-                if (password.length < 6) {
-                    errorMessage.textContent = '⚠️ Password must be at least 6 characters';
-                    errorMessage.classList.add('show');
-                    return;
-                }
-                
-                await setupPassword(password);
-                unlockApp();
-            } else {
-                // Login attempt
-                const isValid = await verifyPassword(password);
-                
-                if (isValid) {
-                    unlockApp();
-                } else {
-                    errorMessage.textContent = '❌ Incorrect password. Please try again.';
-                    errorMessage.classList.add('show');
-                    document.getElementById('passwordInput').value = '';
-                }
-            }
-        });
+            hideMessages();
 
-        // Unlock the app
-        function unlockApp() {
-            isAuthenticated = true;
-            sessionStorage.setItem(SESSION_KEY, 'true');
-            
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('appContainer').classList.add('unlocked');
-            
-            init();
-        }
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
 
-        // Logout
-        function logout() {
-            if (confirm('Lock your journal? You\'ll need your password to access it again.')) {
-                isAuthenticated = false;
-                sessionStorage.removeItem(SESSION_KEY);
-                
-                document.getElementById('loginScreen').style.display = 'block';
-                document.getElementById('appContainer').classList.remove('unlocked');
-                document.getElementById('passwordInput').value = '';
-                document.getElementById('errorMessage').classList.remove('show');
-            }
-        }
-
-        // Change password
-        document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const current = document.getElementById('currentPassword').value;
-            const newPass = document.getElementById('newPassword').value;
-            const confirm = document.getElementById('confirmPassword').value;
-            
-            if (newPass !== confirm) {
-                alert('❌ New passwords do not match!');
-                return;
-            }
-            
-            if (newPass.length < 6) {
-                alert('❌ Password must be at least 6 characters!');
-                return;
-            }
-            
-            const isValid = await verifyPassword(current);
-            if (!isValid) {
-                alert('❌ Current password is incorrect!');
-                return;
-            }
-            
-            await setupPassword(newPass);
-            alert('✅ Password updated successfully!');
-            document.getElementById('changePasswordForm').reset();
-        });
-
-        // Delete all data
-        function deleteAllData() {
-            const confirmed = confirm('⚠️ WARNING: This will permanently delete ALL your journal entries, skills, and data. This cannot be undone!\n\nType "DELETE" in the next prompt to confirm.');
-            
-            if (confirmed) {
-                const doubleConfirm = prompt('Type DELETE to confirm:');
-                if (doubleConfirm === 'DELETE') {
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    alert('✅ All data deleted. You will be logged out.');
-                    location.reload();
-                }
-            }
-        }
-
-        // Check session on page load
-        window.addEventListener('load', () => {
-            if (isFirstTimeSetup()) {
-                document.getElementById('setupNotice').style.display = 'block';
-                document.getElementById('loginButton').textContent = '🎯 Create Password';
-            } else {
-                document.getElementById('toggleMode').style.display = 'block';
-            }
-            
-            // Check if session is active
-            if (sessionStorage.getItem(SESSION_KEY) === 'true') {
-                unlockApp();
-            }
-        });
-
-        // Initialize app (called after successful login)
-        async function init() {
-            await loadData();
-            updateStats();
-            renderEntries();
-            renderSkills();
-            generateInsights();
-        }
-
-        // Load data from localStorage
-        async function loadData() {
             try {
-                const entriesData = localStorage.getItem('journal-entries');
-                if (entriesData) {
-                    journalEntries = JSON.parse(entriesData);
-                }
-
-                const skillsData = localStorage.getItem('skills-database');
-                if (skillsData) {
-                    skills = JSON.parse(skillsData);
-                }
-
-                const statsData = localStorage.getItem('career-stats');
-                if (statsData) {
-                    stats = JSON.parse(statsData);
-                }
+                document.getElementById('loginButton').disabled = true;
+                await auth.signInWithEmailAndPassword(email, password);
             } catch (error) {
-                console.log('No existing data found, starting fresh');
+                showError(error.message);
+                document.getElementById('loginButton').disabled = false;
+            }
+        });
+
+        // Sign out
+        async function logout() {
+            if (confirm('Sign out? Your data is safely synced to the cloud.')) {
+                try {
+                    await auth.signOut();
+                } catch (error) {
+                    showError(error.message);
+                }
             }
         }
 
-        // Save data
+        // Show/hide screens
+        function showLogin() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('appContainer').classList.remove('active');
+        }
+
+        function showApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').classList.add('active');
+        }
+
+        // Messages
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.classList.add('show');
+        }
+
+        function hideMessages() {
+            document.getElementById('errorMessage').classList.remove('show');
+            document.getElementById('successMessage').classList.remove('show');
+        }
+
+        // Sync status
+        function setSyncStatus(status, text) {
+            const syncStatus = document.getElementById('syncStatus');
+            const syncText = document.getElementById('syncText');
+            
+            syncStatus.className = 'sync-status ' + status;
+            syncText.textContent = text;
+        }
+
+        // Load user data from Firebase
+        async function loadUserData() {
+            if (!currentUser) return;
+
+            setSyncStatus('syncing', 'Loading...');
+
+            try {
+                const userRef = database.ref('users/' + currentUser.uid);
+                
+                // Listen for real-time updates
+                userRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    
+                    if (data) {
+                        journalEntries = data.entries || [];
+                        skills = data.skills || [];
+                        stats = data.stats || {
+                            totalEntries: 0,
+                            totalSkills: 0,
+                            currentStreak: 0,
+                            totalAchievements: 0
+                        };
+
+                        updateStats();
+                        renderEntries();
+                        renderSkills();
+                        generateInsights();
+                    }
+
+                    setSyncStatus('', 'Synced');
+                });
+            } catch (error) {
+                console.error('Load error:', error);
+                setSyncStatus('error', 'Sync Error');
+            }
+        }
+
+        // Save data to Firebase
         async function saveData() {
-            localStorage.setItem('journal-entries', JSON.stringify(journalEntries));
-            localStorage.setItem('skills-database', JSON.stringify(skills));
-            localStorage.setItem('career-stats', JSON.stringify(stats));
+            if (!currentUser) return;
+
+            setSyncStatus('syncing', 'Saving...');
+
+            try {
+                await database.ref('users/' + currentUser.uid).set({
+                    entries: journalEntries,
+                    skills: skills,
+                    stats: stats,
+                    lastUpdated: new Date().toISOString()
+                });
+
+                setSyncStatus('', 'Synced');
+                return true;
+            } catch (error) {
+                console.error('Save error:', error);
+                setSyncStatus('error', 'Save Failed');
+                alert('Failed to save: ' + error.message);
+                return false;
+            }
         }
 
         // Tab switching
@@ -1079,13 +1106,12 @@
             });
 
             stats.totalSkills = skills.length;
-            await saveData();
-            updateStats();
-            renderEntries();
-            renderSkills();
-            
-            document.getElementById('journalForm').reset();
-            alert('✅ Journal entry saved successfully!');
+
+            const saved = await saveData();
+            if (saved) {
+                document.getElementById('journalForm').reset();
+                alert('✅ Entry saved and synced!');
+            }
         });
 
         // Skill form
@@ -1104,12 +1130,12 @@
             });
 
             stats.totalSkills = skills.length;
-            await saveData();
-            updateStats();
-            renderSkills();
-            
-            document.getElementById('skillForm').reset();
-            alert('✅ Skill added successfully!');
+
+            const saved = await saveData();
+            if (saved) {
+                document.getElementById('skillForm').reset();
+                alert('✅ Skill added and synced!');
+            }
         });
 
         function updateStats() {
@@ -1150,7 +1176,7 @@
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="empty-state"><p>No entries found. Start your journal today!</p></div>';
+                container.innerHTML = '<div class="empty-state"><p>No entries found. Start journaling!</p></div>';
                 return;
             }
 
@@ -1159,13 +1185,13 @@
                     <h3>${new Date(entry.date).toLocaleDateString('en-US', { 
                         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
                     })}</h3>
-                    <div class="date">${entry.project ? `📁 ${entry.project}` : ''}</div>
+                    ${entry.project ? `<div style="color: #666; font-size: 0.9em; margin-bottom: 10px;">📁 ${entry.project}</div>` : ''}
                     ${entry.achievements ? `<div class="content-text"><strong>🎯 Achievements:</strong><br>${entry.achievements}</div>` : ''}
                     ${entry.challenges ? `<div class="content-text"><strong>⚡ Challenges:</strong><br>${entry.challenges}</div>` : ''}
                     ${entry.lessonsLearned ? `<div class="content-text"><strong>💡 Learned:</strong><br>${entry.lessonsLearned}</div>` : ''}
                     ${entry.lessonsToLearn ? `<div class="content-text"><strong>📚 Want to Learn:</strong><br>${entry.lessonsToLearn}</div>` : ''}
-                    ${entry.skillsUsed.length > 0 ? `<div class="tags">${entry.skillsUsed.map(skill => `<span class="tag">${skill}</span>`).join('')}</div>` : ''}
-                    <div class="action-buttons" style="margin-top: 15px;">
+                    ${entry.skillsUsed?.length > 0 ? `<div class="tags">${entry.skillsUsed.map(skill => `<span class="tag">${skill}</span>`).join('')}</div>` : ''}
+                    <div style="margin-top: 15px;">
                         <button class="btn btn-sm btn-danger" onclick="deleteEntry(${entry.id})">🗑️ Delete</button>
                     </div>
                 </div>
@@ -1177,8 +1203,6 @@
                 journalEntries = journalEntries.filter(e => e.id !== id);
                 stats.totalEntries = journalEntries.length;
                 await saveData();
-                updateStats();
-                renderEntries();
             }
         }
 
@@ -1187,26 +1211,24 @@
             const filtered = currentFilter === 'all' ? skills : skills.filter(s => s.category === currentFilter);
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="empty-state"><p>No skills found. Add your first skill!</p></div>';
+                container.innerHTML = '<div class="empty-state"><p>No skills found.</p></div>';
                 return;
             }
 
             container.innerHTML = filtered.map(skill => `
                 <div class="skill-item">
                     <div class="skill-info">
-                        <div class="skill-name">
+                        <div class="skill-name" style="font-weight: 600; color: #333; margin-bottom: 5px;">
                             ${skill.name}
                             <span class="skill-level level-${skill.level}">${skill.level}</span>
                         </div>
-                        <div class="skill-meta">
+                        <div style="font-size: 0.9em; color: #666;">
                             ${skill.yearsExperience > 0 ? `${skill.yearsExperience} years` : 'New'} 
                             ${skill.timesUsed ? `• Used ${skill.timesUsed} times` : ''}
                             ${skill.context ? `<br>${skill.context.substring(0, 100)}...` : ''}
                         </div>
                     </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-sm btn-danger" onclick="deleteSkill(${skill.id})">🗑️</button>
-                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="deleteSkill(${skill.id})">🗑️</button>
                 </div>
             `).join('');
         }
@@ -1223,8 +1245,6 @@
                 skills = skills.filter(s => s.id !== id);
                 stats.totalSkills = skills.length;
                 await saveData();
-                updateStats();
-                renderSkills();
             }
         }
 
@@ -1237,7 +1257,7 @@
             }
 
             const recentEntries = journalEntries.slice(0, 10);
-            const allSkillsUsed = recentEntries.flatMap(e => e.skillsUsed);
+            const allSkillsUsed = recentEntries.flatMap(e => e.skillsUsed || []);
             const skillFrequency = {};
             allSkillsUsed.forEach(skill => {
                 skillFrequency[skill] = (skillFrequency[skill] || 0) + 1;
@@ -1253,66 +1273,48 @@
 
             container.innerHTML = `
                 <div class="insight-card">
-                    <h3>🎯 Career Focus Analysis</h3>
+                    <h3>🎯 Career Focus</h3>
                     <ul>
-                        <li><strong>${goalAlignment}</strong> of your last ${recentEntries.length} entries aligned with goals</li>
-                        <li>Goal alignment: <strong>${recentEntries.length > 0 ? Math.round(goalAlignment/recentEntries.length * 100) : 0}%</strong></li>
+                        <li><strong>${goalAlignment}</strong> of last ${recentEntries.length} entries aligned with goals</li>
+                        <li>Alignment: <strong>${recentEntries.length > 0 ? Math.round(goalAlignment/recentEntries.length * 100) : 0}%</strong></li>
                     </ul>
                 </div>
                 ${topSkills.length > 0 ? `
                 <div class="insight-card">
-                    <h3>💼 Most Used Skills</h3>
-                    <ul>
-                        ${topSkills.map(({ skill, count }) => `<li><strong>${skill}</strong> - used ${count} times</li>`).join('')}
-                    </ul>
+                    <h3>💼 Top Skills Used</h3>
+                    <ul>${topSkills.map(({ skill, count }) => `<li><strong>${skill}</strong> - ${count}x</li>`).join('')}</ul>
                 </div>` : ''}
                 <div class="insight-card">
                     <h3>🚀 Your Strengths</h3>
                     <ul>
-                        <li>Advanced/Expert skills: <strong>${expertSkills.length}</strong></li>
-                        <li>Total skills tracked: <strong>${skills.length}</strong></li>
-                        <li>Current streak: <strong>${stats.currentStreak} days</strong></li>
+                        <li>Expert skills: <strong>${expertSkills.length}</strong></li>
+                        <li>Total skills: <strong>${skills.length}</strong></li>
+                        <li>Streak: <strong>${stats.currentStreak} days</strong></li>
                     </ul>
                 </div>
             `;
         }
 
         function exportResume() {
-            const resumeData = {
-                skills: skills.map(s => ({
-                    name: s.name,
-                    level: s.level,
-                    years: s.yearsExperience,
-                    category: s.category
-                })),
-                recentAchievements: journalEntries.slice(0, 20).map(e => e.achievements).filter(a => a),
-                topSkills: skills.filter(s => s.level === 'expert' || s.level === 'advanced').map(s => s.name),
-                professionalSummary: `Professional with ${stats.currentStreak}+ day streak, ${stats.totalAchievements} achievements.`
+            const data = {
+                skills: skills.map(s => ({ name: s.name, level: s.level, years: s.yearsExperience })),
+                achievements: journalEntries.slice(0, 20).map(e => e.achievements).filter(a => a),
+                summary: `${stats.currentStreak}+ day streak, ${stats.totalAchievements} achievements`
             };
-
-            downloadJSON(resumeData, 'resume-data.json');
-            alert('✅ Resume data exported!');
+            downloadJSON(data, 'resume-data.json');
         }
 
         function exportSkillsMatrix() {
             const matrix = {
                 technical: skills.filter(s => s.category === 'technical' || s.category === 'languages'),
                 tools: skills.filter(s => s.category === 'tools'),
-                soft: skills.filter(s => s.category === 'soft'),
-                certifications: skills.filter(s => s.category === 'certifications'),
-                domain: skills.filter(s => s.category === 'domain')
+                soft: skills.filter(s => s.category === 'soft')
             };
             downloadJSON(matrix, 'skills-matrix.json');
         }
 
         function exportAllData() {
-            const allData = {
-                journalEntries,
-                skills,
-                stats,
-                exportDate: new Date().toISOString()
-            };
-            downloadJSON(allData, 'career-journal-backup.json');
+            downloadJSON({ journalEntries, skills, stats, exportDate: new Date().toISOString() }, 'career-journal-backup.json');
         }
 
         function downloadJSON(data, filename) {
@@ -1333,13 +1335,11 @@
 
             document.getElementById('matchResults').innerHTML = `
                 <div class="insight-card">
-                    <h3>🎯 Job Match: ${matchPercentage}%</h3>
-                    <p>Matching skills: <strong>${matchingSkills.length}</strong></p>
-                    ${matchingSkills.length > 0 ? `
-                    <h4 style="margin-top: 20px;">✅ Your Matches:</h4>
-                    <ul>
-                        ${matchingSkills.map(s => `<li><strong>${s.name}</strong> (${s.level})</li>`).join('')}
-                    </ul>` : '<p>⚠️ No direct matches found.</p>'}
+                    <h3>🎯 Match: ${matchPercentage}%</h3>
+                    <p>Matching: <strong>${matchingSkills.length}</strong> skills</p>
+                    ${matchingSkills.length > 0 ? `<h4 style="margin-top: 15px;">✅ Matches:</h4><ul>
+                        ${matchingSkills.map(s => `<li><strong>${s.name}</strong> (${s.level})</li>`).join('')}</ul>` : 
+                        '<p style="margin-top: 15px;">⚠️ No direct matches.</p>'}
                 </div>
             `;
         });
